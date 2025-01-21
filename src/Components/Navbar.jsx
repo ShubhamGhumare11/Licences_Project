@@ -110,29 +110,29 @@ const Navbar = () => {
           {/* Desktop Navigation */}
           <div className="hidden sm:flex sm:items-center sm:space-x-4">
             <a
-              href="#"
+              href="adminsection"
               className="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white"
             >
               Dashboard
             </a>
             <a
-              href="#"
+              href="licensemanager"
               className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
             >
-              Team
+              LicenseManagement
             </a>
-            <a
+            {/* <a
               href="#"
               className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
             >
               Projects
-            </a>
-            <a
+            </a> */}
+            {/* <a
               href="#"
               className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
             >
               Calendar
-            </a>
+            </a> */}
 
             {/* Avatar Icon */}
             <div className="relative">
@@ -180,29 +180,29 @@ const Navbar = () => {
         <div className="sm:hidden">
           <div className="space-y-1 px-2 pb-3 pt-2">
             <a
-              href="#"
+              href="adminsection"
               className="block rounded-md bg-gray-900 px-3 py-2 text-base font-medium text-white"
             >
               Dashboard
             </a>
             <a
-              href="#"
+              href="licensemanager"
               className="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
             >
-              Team
+              LicenseManagement
             </a>
-            <a
+            {/* <a
               href="#"
               className="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
             >
               Projects
-            </a>
-            <a
+            </a> */}
+            {/* <a
               href="#"
               className="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
             >
               Calendar
-            </a>
+            </a> */}
           </div>
         </div>
       )}

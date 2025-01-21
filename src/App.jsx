@@ -10,6 +10,8 @@ import Navbar from "./Components/Navbar";
 import AdminSection from "./Pages/AdminSection";
 import UserSection from "./Pages/UserSection";
 import WhatsappChat from "./Components/WhatsappChat ";
+import LicenseManager from "./Components/LicenseManager";
+
 
 
 
@@ -33,8 +35,9 @@ function App() {
       <ScrollToTop />
       <Routes>
         {/* <Route path="/" element={<Home />} /> */}
-                <Route path="/" element={<AdminSection />} />
+                <Route path="/adminsection" element={<AdminSection />} />
                 <Route path="/user" element={<UserSection />} />
+                <Route path="/licensemanager" element={<LicenseManager />} />
 
                 <Route path="/whatsapp-chat" element={<WhatsappChat />} />
 
