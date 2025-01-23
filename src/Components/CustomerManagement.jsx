@@ -1,7 +1,7 @@
 // // import React, { useState } from "react";
 // // import LicenceAdd from "./LicenceAdd";
 
-// // const AdminTable = () => {
+// // const CutomerManagement = () => {
 // //   // Sample user array
 // //   const users = [
 // //     {
@@ -404,13 +404,13 @@
 // //   );
 // // };
 
-// // export default AdminTable;
+// // export default CutomerManagement;
 
 
 // import React, { useState, useEffect } from "react";
 // import axios from "axios";
 
-// const AdminTable = () => {
+// const CutomerManagement = () => {
 //   // Sample state for users
 //   const [customers, setCustomers] = useState([]);
 //   const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -683,7 +683,7 @@
 //   );
 // };
 
-// export default AdminTable;
+// export default CutomerManagement;
 
 
 
@@ -695,7 +695,7 @@ import LicenseAddToCustomer from "./LicenseAddToCustomer";
 import EditCustomerPopup from "./EditCustomerPopup";
 
 import api from "../Utils/api";
-const AdminTable = () => {
+const CutomerManagement = () => {
   const [customers, setCustomers] = useState([]);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [newUser, setNewUser] = useState({
@@ -836,7 +836,7 @@ const [currentCustomerLicenses, setCurrentCustomerLicenses] = useState([]); // F
   // Filter customers based on status and search term
   const filteredCustomers = customers.filter(
     (customer) =>
-      (statusFilter ? customer.licenceDTOS.some(lic => lic.status === statusFilter) : true) &&
+      (statusFilter ? customer.licenseOfCustomerDTOS.some(lic => lic.status === statusFilter) : true) &&
       (customer.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
         customer.email.toLowerCase().includes(searchTerm.toLowerCase()))
   );
@@ -854,8 +854,17 @@ const [currentCustomerLicenses, setCurrentCustomerLicenses] = useState([]); // F
   };
 
   return (
+<>
+
+    <div class="max-w-3xl mx-auto text-center mt-2 mb-4">
+    <h1 class="text-4xl font-bold text-gray-900 leading-tight mb-2 pb-4 relative">
+        <span class="bg-clip-text text-transparent bg-gradient-to-r from-purple-900 to-pink-600">Customer Management</span>
+        <span class="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-purple-900 to-pink-300"></span>
+    </h1>
+    {/* <p class="text-lg text-gray-800 mb-8"></p> */}
+</div>
     <div className="bg-gray-100 p-5">
-      <div className="flex justify-between mb-4">
+      {/* <div className="flex justify-between mb-4">
         <div className="flex space-x-1">
           <select
             value={statusFilter}
@@ -876,7 +885,36 @@ const [currentCustomerLicenses, setCurrentCustomerLicenses] = useState([]); // F
             className="px-4 py-2 border border-gray-300 rounded-md"
           />
         </div>
-      </div>
+      </div> */}
+
+<div className="flex flex-wrap items-center justify-between gap-4 mb-4">
+  {/* Filter and Search Container */}
+  <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
+    {/* Status Filter Dropdown */}
+    <select
+      value={statusFilter}
+      onChange={(e) => setStatusFilter(e.target.value)}
+      className="px-4 py-2 border border-gray-300 rounded-md w-full sm:w-auto"
+    >
+      <option value="">Filter By Status</option>
+      {/* <option value="ACTIVE">Active</option>
+      <option value="RENEW">RENEW</option> */}
+      <option value="PENDING">Any Pending License</option>
+    </select>
+
+    
+
+    {/* Search Input */}
+    <input
+      type="text"
+      value={searchTerm}
+      onChange={(e) => setSearchTerm(e.target.value)}
+      placeholder="Search by name or email"
+      className="px-4 py-2 border border-gray-300 rounded-md w-full sm:w-auto"
+    />
+  </div>
+</div>
+
 
       {showModal && (
   <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-50 z-50">
@@ -1053,12 +1091,19 @@ const [currentCustomerLicenses, setCurrentCustomerLicenses] = useState([]); // F
 
 
       <div className="overflow-x-auto">
+
+        <div className="flex justify-end mb-4">
         <button
           onClick={() => setShowModal(true)}
           className="bg-blue-500 text-white px-4 py-2 rounded bg-green-500 hover:bg-green-700 ml-auto"
         >
           Add Customer +
         </button>
+
+        </div>
+      
+
+    
 
         <table className="min-w-full divide-y divide-gray-200 bg-white shadow-md rounded-lg">
           <thead className="bg-gray-200">
@@ -1090,16 +1135,16 @@ const [currentCustomerLicenses, setCurrentCustomerLicenses] = useState([]); // F
 
 
 <td className="px-3 py-4 whitespace-nowrap">
-  {customer.licenceDTOS && customer.licenceDTOS.length > 0 ? (
+  {customer.licenseOfCustomerDTOS && customer.licenseOfCustomerDTOS.length > 0 ? (
     <span 
-    onClick={() => openLicenseModal(customer.licenceDTOS)}
+    onClick={() => openLicenseModal(customer.licenseOfCustomerDTOS)}
     className="inline-flex items-center justify-center w-8 h-8 
     rounded-full bg-green-500 text-white text-sm font-bold">
-      {customer.licenceDTOS.length}
+      {customer.licenseOfCustomerDTOS.length}
     </span>
   ) : (
     <span 
-    onClick={() => openLicenseModal(customer.licenceDTOS)}
+   
     className="inline-flex items-center justify-center w-8 h-8 
     rounded-full bg-red-600 text-white text-sm font-bold">
      0
@@ -1146,7 +1191,6 @@ const [currentCustomerLicenses, setCurrentCustomerLicenses] = useState([]); // F
   <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-50 z-50">
     <div className="bg-white p-6 rounded-lg shadow-lg w-96">
       <h2 className="text-xl font-bold mb-4">License Details</h2>
-      <h2 className="text-xl font-bold mb-4">Customer Name :<h2 className="text-xl  mb-4">{customer.firstName} </h2> </h2>
       {currentCustomerLicenses.length > 0 ? (
         <ul className="space-y-2">
           {currentCustomerLicenses.map((license, index) => (
@@ -1215,7 +1259,9 @@ const [currentCustomerLicenses, setCurrentCustomerLicenses] = useState([]); // F
         </button>
       </div>
     </div>
+
+    </>
   );
 };
 
-export default AdminTable;
+export default CutomerManagement;

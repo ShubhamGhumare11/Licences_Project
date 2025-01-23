@@ -100,12 +100,13 @@ const AdminChart = () => {
   return (
     <>
     
-    <div class="max-w-3xl mx-auto text-center mt-16">
+   
+    <div class="max-w-3xl mx-auto text-center mt-2 mb-4">
     <h1 class="text-4xl font-bold text-gray-900 leading-tight mb-2 pb-4 relative">
-        <span class="bg-clip-text text-transparent bg-gradient-to-r from-purple-500 to-pink-500">Admin Dashboard</span>
+        <span class="bg-clip-text text-transparent bg-gradient-to-r from-purple-500 to-pink-500">License Management</span>
         <span class="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-purple-500 to-pink-500"></span>
     </h1>
-    <p class="text-lg text-gray-800 mb-8"></p>
+    {/* <p class="text-lg text-gray-800 mb-8"></p> */}
 </div>
  
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">

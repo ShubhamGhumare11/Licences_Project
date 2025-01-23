@@ -53,7 +53,7 @@ const LicenseAddToCustomer = ({ customerId, showModal, onClose }) => {
         setError("Failed to add license");
       }
     } catch (err) {
-      setError("Error adding license");
+      setError("Cutomer already applied for this license.");
     }
   };
 
