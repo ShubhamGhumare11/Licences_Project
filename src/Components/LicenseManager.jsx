@@ -7,7 +7,6 @@ const LicenseManager = () => {
   const [licenses, setLicenses] = useState([]); // Initialize licenses as an empty array
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const [newLicense, setNewLicense] = useState({ name: "", status: "", date: "" });
   const [currentPage, setCurrentPage] = useState(1);
   
   const licensesPerPage = 5;
@@ -45,22 +44,15 @@ const LicenseManager = () => {
   const handleNextPage = () => currentPage < totalPages && setCurrentPage(currentPage + 1);
   const handlePrevPage = () => currentPage > 1 && setCurrentPage(currentPage - 1);
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setNewLicense((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
 
-  const deleteLicense = async (licenseID) => {
+  const deleteLicense = async (licenseListID) => {
     try {
-        const response = await api.delete(`/api/licenseList/deleteLicenseList`, {
-            params: { licenseListID: licenseID },
+        const response = await api.delete(`/api/licenseList/deleteLicenseListByID`, {
+            params: { licenseListID: licenseListID },
         });
 
         if (response.data.code === "SUCCESS") {
-            setLicenses((prevLicenses) => prevLicenses.filter((license) => license.licenseID !== licenseID));
+            setLicenses((prevLicenses) => prevLicenses.filter((license) => license.licenseID !== licenseListID));
             alert("License deleted successfully!");
         } else {
             alert(`Failed to delete license: ${response.data.message}`);
@@ -81,7 +73,7 @@ const LicenseManager = () => {
     <div className="bg-gray-100 p-5">
  <div class="max-w-3xl mx-auto text-center mt-16">
     <h1 class="text-4xl font-bold text-gray-900 leading-tight mb-2 pb-4 relative">
-        <span class="bg-clip-text text-transparent bg-gradient-to-r from-purple-500 to-pink-500">License Management</span>
+        <span class="bg-clip-text text-transparent bg-gradient-to-r from-purple-500 to-pink-500">List Of License</span>
         <span class="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-purple-500 to-pink-500"></span>
     </h1>
     <p class="text-lg text-gray-800 mb-8"></p>

@@ -800,6 +800,41 @@ const [currentCustomerLicenses, setCurrentCustomerLicenses] = useState([]); // F
     }
   };
 
+  const handleCustomerStatusChange = async (customer) => {
+    try {
+      // Toggle the 'present' field between AVAILABLE and UNAVAILABLE
+      const present = customer.present === "AVAILABLE" ? "UNAVAILABLE" : "AVAILABLE";
+  
+      // API call using axios to send PATCH request with query parameters
+      const response = await api.patch(
+        `/api/customer/updateCustomerStatus`,  // Endpoint
+        null,  // No body payload for PATCH request
+        {
+          params: { 
+            customerId: customer.customerId,  // Customer ID
+            present: present  // Updated present status
+          }
+        }
+      );
+  
+fetchCustomers();
+
+
+      if (response.data.code === "SUCCESS") {
+        // If the response is successful, update the UI or state
+        alert("Customer status updated successfully!");
+        // Here, you could also update the customer status in the local state/UI
+      } else {
+        alert(`Failed to update status: ${response.data.message}`);
+      }
+    } catch (error) {
+      console.error("Error updating customer status:", error);
+      alert("An error occurred while updating the status.");
+    }
+  };
+  
+  
+
 
   const handleAddLicenseClick = (customerId) => {
     setSelectedCustomerId(customerId);
@@ -854,17 +889,18 @@ const [currentCustomerLicenses, setCurrentCustomerLicenses] = useState([]); // F
   };
 
   return (
-<>
-
-    <div class="max-w-3xl mx-auto text-center mt-2 mb-4">
-    <h1 class="text-4xl font-bold text-gray-900 leading-tight mb-2 pb-4 relative">
-        <span class="bg-clip-text text-transparent bg-gradient-to-r from-purple-900 to-pink-600">Customer Management</span>
-        <span class="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-purple-900 to-pink-300"></span>
-    </h1>
-    {/* <p class="text-lg text-gray-800 mb-8"></p> */}
-</div>
-    <div className="bg-gray-100 p-5">
-      {/* <div className="flex justify-between mb-4">
+    <>
+      <div class="max-w-3xl mx-auto text-center mt-2 mb-4">
+        <h1 class="text-4xl font-bold text-gray-900 leading-tight mb-2 pb-4 relative">
+          <span class="bg-clip-text text-transparent bg-gradient-to-r from-purple-900 to-pink-600">
+            Customer Management
+          </span>
+          <span class="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-purple-900 to-pink-300"></span>
+        </h1>
+        {/* <p class="text-lg text-gray-800 mb-8"></p> */}
+      </div>
+      <div className="bg-gray-100 p-5">
+        {/* <div className="flex justify-between mb-4">
         <div className="flex space-x-1">
           <select
             value={statusFilter}
@@ -887,379 +923,441 @@ const [currentCustomerLicenses, setCurrentCustomerLicenses] = useState([]); // F
         </div>
       </div> */}
 
-<div className="flex flex-wrap items-center justify-between gap-4 mb-4">
-  {/* Filter and Search Container */}
-  <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
-    {/* Status Filter Dropdown */}
-    <select
-      value={statusFilter}
-      onChange={(e) => setStatusFilter(e.target.value)}
-      className="px-4 py-2 border border-gray-300 rounded-md w-full sm:w-auto"
-    >
-      <option value="">Filter By Status</option>
-      {/* <option value="ACTIVE">Active</option>
+        <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
+          {/* Filter and Search Container */}
+          <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
+            {/* Status Filter Dropdown */}
+            <select
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}
+              className="px-4 py-2 border border-gray-300 rounded-md w-full sm:w-auto"
+            >
+              <option value="">Filter By Status</option>
+              {/* <option value="ACTIVE">Active</option>
       <option value="RENEW">RENEW</option> */}
-      <option value="PENDING">Any Pending License</option>
-    </select>
+              <option value="PENDING">Any Pending License</option>
+            </select>
 
-    
-
-    {/* Search Input */}
-    <input
-      type="text"
-      value={searchTerm}
-      onChange={(e) => setSearchTerm(e.target.value)}
-      placeholder="Search by name or email"
-      className="px-4 py-2 border border-gray-300 rounded-md w-full sm:w-auto"
-    />
-  </div>
-</div>
-
-
-      {showModal && (
-  <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-50 z-50">
-    <div className="bg-white p-6 rounded-lg shadow-lg w-96">
-      <h2 className="text-xl font-bold mb-4">Add New Customer</h2>
-      <form onSubmit={handleSubmit}>
-        {/* Form Fields */}
-
-        <div className="flex flex-col md:flex-row gap-4">       
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">Firstname</label>
-          <input
-            type="text"
-            name="firstName"
-            value={newUser.firstName}
-            onChange={handleInputChange}
-            required
-            className="w-full px-4 py-2 border border-gray-300 rounded-md"
-            placeholder="Enter Firstname"
-          />
+            {/* Search Input */}
+            <input
+              type="text"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              placeholder="Search by name or email"
+              className="px-4 py-2 border border-gray-300 rounded-md w-full sm:w-auto"
+            />
+          </div>
         </div>
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">Lastname</label>
-          <input
-            type="text"
-            name="lastName"
-            value={newUser.lastName}
-            onChange={handleInputChange}
-            required
-            className="w-full px-4 py-2 border border-gray-300 rounded-md"
-            placeholder="Enter Lastname"
-          />
-        </div>
-        </div>
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">Mobile No</label>
-          <input
-            type="tel"
-            name="mobileNumber"
-            value={newUser.mobileNumber}
-            onChange={(e) =>
-              handleInputChange({
-                target: { name: "mobileNumber", value: e.target.value.replace(/\D/g, "") },
-              })
-            }
-            required
-            className="w-full px-4 py-2 border border-gray-300 rounded-md"
-            placeholder="Enter 10-digit mobile number"
-            maxLength={10}
-            pattern="\d{10}"
-            title="Mobile number should be 10 digits"
-          />
-        </div>
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">Email</label>
-          <input
-            type="email"
-            name="email"
-            value={newUser.email}
-            onChange={handleInputChange}
-            required
-            className="w-full px-4 py-2 border border-gray-300 rounded-md"
-            placeholder="Enter email address"
-          />
-        </div>
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">City</label>
-          <input
-            type="text"
-            name="city"
-            value={newUser.city}
-            onChange={handleInputChange}
-            required
-            className="w-full px-4 py-2 border border-gray-300 rounded-md"
-            placeholder="Enter city"
-          />
-        </div>
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">Area</label>
-          <input
-            type="text"
-            name="area"
-            value={newUser.area}
-            onChange={handleInputChange}
-            required
-            className="w-full px-4 py-2 border border-gray-300 rounded-md"
-            placeholder="Enter area"
-          />
-        </div>
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">Pincode</label>
-          <input
-            type="text"
-            name="pincode"
-            value={newUser.pincode}
-            onChange={(e) =>
-              handleInputChange({
-                target: { name: "pincode", value: e.target.value.replace(/\D/g, "") },
-              })
-            }
-            required
-            className="w-full px-4 py-2 border border-gray-300 rounded-md"
-            placeholder="Enter pincode"
-            maxLength={6}
-            pattern="\d{6}"
-            title="Pincode should be 6 digits"
-          />
-        </div>
-        <div className="mb-4">
-  <label className="block text-sm font-medium text-gray-700">State</label>
-  <select
-    name="state"
-    value={newUser.state}
-    onChange={handleInputChange}
-    required
-    className="w-full px-4 py-2 border border-gray-300 rounded-md bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm md:text-sm lg:text-sm"
-  >
-    <option value="" disabled>Select a state</option>
-    <option value="Andhra Pradesh">Andhra Pradesh</option>
-    <option value="Arunachal Pradesh">Arunachal Pradesh</option>
-    <option value="Assam">Assam</option>
-    <option value="Bihar">Bihar</option>
-    <option value="Chhattisgarh">Chhattisgarh</option>
-    <option value="Goa">Goa</option>
-    <option value="Gujarat">Gujarat</option>
-    <option value="Haryana">Haryana</option>
-    <option value="Himachal Pradesh">Himachal Pradesh</option>
-    <option value="Jharkhand">Jharkhand</option>
-    <option value="Karnataka">Karnataka</option>
-    <option value="Kerala">Kerala</option>
-    <option value="Madhya Pradesh">Madhya Pradesh</option>
-    <option value="Maharashtra">Maharashtra</option>
-    <option value="Manipur">Manipur</option>
-    <option value="Meghalaya">Meghalaya</option>
-    <option value="Mizoram">Mizoram</option>
-    <option value="Nagaland">Nagaland</option>
-    <option value="Odisha">Odisha</option>
-    <option value="Punjab">Punjab</option>
-    <option value="Rajasthan">Rajasthan</option>
-    <option value="Sikkim">Sikkim</option>
-    <option value="Tamil Nadu">Tamil Nadu</option>
-    <option value="Telangana">Telangana</option>
-    <option value="Uttar Pradesh">Uttar Pradesh</option>
-    <option value="Uttarakhand">Uttarakhand</option>
-    <option value="West Bengal">West Bengal</option>
-    <option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>
-    <option value="Chandigarh">Chandigarh</option>
-    <option value="Dadra and Nagar Haveli and Daman and Diu">Dadra and Nagar Haveli and Daman and Diu</option>
-    <option value="Lakshadweep">Lakshadweep</option>
-    <option value="Delhi">Delhi</option>
-    <option value="Puducherry">Puducherry</option>
-  </select>
-</div>
 
-        <div className="flex justify-end space-x-4">
-          <button
-            type="button"
-            onClick={() => setShowModal(false)}
-            className="bg-gray-300 px-4 py-2 rounded-md"
-          >
-            Cancel
-          </button>
-          <button
-            type="submit"
-            className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
-          >
-            Add Customer
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
-)}
+        {showModal && (
+          <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-50 z-50">
+            <div className="bg-white p-6 rounded-lg shadow-lg w-96">
+              <h2 className="text-xl font-bold mb-4">Add New Customer</h2>
+              <form onSubmit={handleSubmit}>
+                {/* Form Fields */}
 
+                <div className="flex flex-col md:flex-row gap-4">
+                  <div className="mb-4">
+                    <label className="block text-sm font-medium text-gray-700">
+                      Firstname
+                    </label>
+                    <input
+                      type="text"
+                      name="firstName"
+                      value={newUser.firstName}
+                      onChange={handleInputChange}
+                      required
+                      className="w-full px-4 py-2 border border-gray-300 rounded-md"
+                      placeholder="Enter Firstname"
+                    />
+                  </div>
+                  <div className="mb-4">
+                    <label className="block text-sm font-medium text-gray-700">
+                      Lastname
+                    </label>
+                    <input
+                      type="text"
+                      name="lastName"
+                      value={newUser.lastName}
+                      onChange={handleInputChange}
+                      required
+                      className="w-full px-4 py-2 border border-gray-300 rounded-md"
+                      placeholder="Enter Lastname"
+                    />
+                  </div>
+                </div>
+                <div className="mb-4">
+                  <label className="block text-sm font-medium text-gray-700">
+                    Mobile No
+                  </label>
+                  <input
+                    type="tel"
+                    name="mobileNumber"
+                    value={newUser.mobileNumber}
+                    onChange={(e) =>
+                      handleInputChange({
+                        target: {
+                          name: "mobileNumber",
+                          value: e.target.value.replace(/\D/g, ""),
+                        },
+                      })
+                    }
+                    required
+                    className="w-full px-4 py-2 border border-gray-300 rounded-md"
+                    placeholder="Enter 10-digit mobile number"
+                    maxLength={10}
+                    pattern="\d{10}"
+                    title="Mobile number should be 10 digits"
+                  />
+                </div>
+                <div className="mb-4">
+                  <label className="block text-sm font-medium text-gray-700">
+                    Email
+                  </label>
+                  <input
+                    type="email"
+                    name="email"
+                    value={newUser.email}
+                    onChange={handleInputChange}
+                    required
+                    className="w-full px-4 py-2 border border-gray-300 rounded-md"
+                    placeholder="Enter email address"
+                  />
+                </div>
+                <div className="mb-4">
+                  <label className="block text-sm font-medium text-gray-700">
+                    City
+                  </label>
+                  <input
+                    type="text"
+                    name="city"
+                    value={newUser.city}
+                    onChange={handleInputChange}
+                    required
+                    className="w-full px-4 py-2 border border-gray-300 rounded-md"
+                    placeholder="Enter city"
+                  />
+                </div>
+                <div className="mb-4">
+                  <label className="block text-sm font-medium text-gray-700">
+                    Area
+                  </label>
+                  <input
+                    type="text"
+                    name="area"
+                    value={newUser.area}
+                    onChange={handleInputChange}
+                    required
+                    className="w-full px-4 py-2 border border-gray-300 rounded-md"
+                    placeholder="Enter area"
+                  />
+                </div>
+                <div className="mb-4">
+                  <label className="block text-sm font-medium text-gray-700">
+                    Pincode
+                  </label>
+                  <input
+                    type="text"
+                    name="pincode"
+                    value={newUser.pincode}
+                    onChange={(e) =>
+                      handleInputChange({
+                        target: {
+                          name: "pincode",
+                          value: e.target.value.replace(/\D/g, ""),
+                        },
+                      })
+                    }
+                    required
+                    className="w-full px-4 py-2 border border-gray-300 rounded-md"
+                    placeholder="Enter pincode"
+                    maxLength={6}
+                    pattern="\d{6}"
+                    title="Pincode should be 6 digits"
+                  />
+                </div>
+                <div className="mb-4">
+                  <label className="block text-sm font-medium text-gray-700">
+                    State
+                  </label>
+                  <select
+                    name="state"
+                    value={newUser.state}
+                    onChange={handleInputChange}
+                    required
+                    className="w-full px-4 py-2 border border-gray-300 rounded-md bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm md:text-sm lg:text-sm"
+                  >
+                    <option value="" disabled>
+                      Select a state
+                    </option>
+                    <option value="Andhra Pradesh">Andhra Pradesh</option>
+                    <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+                    <option value="Assam">Assam</option>
+                    <option value="Bihar">Bihar</option>
+                    <option value="Chhattisgarh">Chhattisgarh</option>
+                    <option value="Goa">Goa</option>
+                    <option value="Gujarat">Gujarat</option>
+                    <option value="Haryana">Haryana</option>
+                    <option value="Himachal Pradesh">Himachal Pradesh</option>
+                    <option value="Jharkhand">Jharkhand</option>
+                    <option value="Karnataka">Karnataka</option>
+                    <option value="Kerala">Kerala</option>
+                    <option value="Madhya Pradesh">Madhya Pradesh</option>
+                    <option value="Maharashtra">Maharashtra</option>
+                    <option value="Manipur">Manipur</option>
+                    <option value="Meghalaya">Meghalaya</option>
+                    <option value="Mizoram">Mizoram</option>
+                    <option value="Nagaland">Nagaland</option>
+                    <option value="Odisha">Odisha</option>
+                    <option value="Punjab">Punjab</option>
+                    <option value="Rajasthan">Rajasthan</option>
+                    <option value="Sikkim">Sikkim</option>
+                    <option value="Tamil Nadu">Tamil Nadu</option>
+                    <option value="Telangana">Telangana</option>
+                    <option value="Uttar Pradesh">Uttar Pradesh</option>
+                    <option value="Uttarakhand">Uttarakhand</option>
+                    <option value="West Bengal">West Bengal</option>
+                    <option value="Andaman and Nicobar Islands">
+                      Andaman and Nicobar Islands
+                    </option>
+                    <option value="Chandigarh">Chandigarh</option>
+                    <option value="Dadra and Nagar Haveli and Daman and Diu">
+                      Dadra and Nagar Haveli and Daman and Diu
+                    </option>
+                    <option value="Lakshadweep">Lakshadweep</option>
+                    <option value="Delhi">Delhi</option>
+                    <option value="Puducherry">Puducherry</option>
+                  </select>
+                </div>
 
-      <div className="overflow-x-auto">
-
-        <div className="flex justify-end mb-4">
-        <button
-          onClick={() => setShowModal(true)}
-          className="bg-blue-500 text-white px-4 py-2 rounded bg-green-500 hover:bg-green-700 ml-auto"
-        >
-          Add Customer +
-        </button>
-
-        </div>
-      
-
-    
-
-        <table className="min-w-full divide-y divide-gray-200 bg-white shadow-md rounded-lg">
-          <thead className="bg-gray-200">
-            <tr>
-              <th scope="col" className="px-3 py-3 text-left text-xs font-medium text-gray-900 uppercase tracking-wider">
-                Fullname
-              </th>
-             
-              <th scope="col" className="px-3 py-3 text-left text-xs font-medium text-gray-900 uppercase tracking-wider">
-                Mobile Number
-              </th>
-              <th scope="col" className="px-3 py-3 text-left text-xs font-medium text-gray-900 uppercase tracking-wider">
-                Number Of Licenses 
-              </th>
-              <th scope="col" className="px-3 py-3 text-left text-xs font-medium text-gray-900 uppercase tracking-wider">
-                Email
-              </th>
-              <th scope="col" className="px-3 py-3 text-left text-xs font-medium text-gray-900 uppercase tracking-wider">
-                Actions
-              </th>
-            </tr>
-          </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
-            {currentCustomers.map((customer) => (
-              <tr key={customer.customerId}>
-                <td className="px-3 py-4 whitespace-nowrap">{customer.firstName} </td>
-                <td className="px-3 py-4 whitespace-nowrap">{customer.mobileNumber}</td>
-               
-
-
-<td className="px-3 py-4 whitespace-nowrap">
-  {customer.licenseOfCustomerDTOS && customer.licenseOfCustomerDTOS.length > 0 ? (
-    <span 
-    onClick={() => openLicenseModal(customer.licenseOfCustomerDTOS)}
-    className="inline-flex items-center justify-center w-8 h-8 
-    rounded-full bg-green-500 text-white text-sm font-bold">
-      {customer.licenseOfCustomerDTOS.length}
-    </span>
-  ) : (
-    <span 
-   
-    className="inline-flex items-center justify-center w-8 h-8 
-    rounded-full bg-red-600 text-white text-sm font-bold">
-     0
-    </span>
-  )}
-</td>
-
-
-
-
-                <td className="px-3 py-4 whitespace-nowrap">{customer.email}</td>
-                <td className="px-3 py-4 whitespace-nowrap text-sm font-medium">
-                  <button 
-                     onClick={() => handleEditClick(customer)}
-                  className="bg-indigo-100 text-indigo-600 hover:bg-indigo-200 px-3 mx-3 py-1 rounded-md">
-                    Edit
+                <div className="flex justify-end space-x-4">
+                  <button
+                    type="button"
+                    onClick={() => setShowModal(false)}
+                    className="bg-gray-300 px-4 py-2 rounded-md"
+                  >
+                    Cancel
                   </button>
-                  <button 
-                     onClick={() => handleDeleteCustomerById(customer.customerId)} 
-                  className="bg-red-100 text-red-600 hover:bg-red-200 px-3 mx-3 py-1 rounded-md">
-                    Delete
+                  <button
+                    type="submit"
+                    className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+                  >
+                    Add Customer
                   </button>
-                    {/* Add the button to add a license */}
-      <button
-        onClick={() => handleAddLicenseClick(customer.customerId)} // Pass customer ID dynamically
-        className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
-      >
-        Add License to Customer
-      </button>
-                </td>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
+
+        <div className="overflow-x-auto">
+          <div className="flex justify-end mb-4">
+            <button
+              onClick={() => setShowModal(true)}
+              className="bg-blue-500 text-white px-4 py-2 rounded bg-green-500 hover:bg-green-700 ml-auto"
+            >
+              Add Customer +
+            </button>
+          </div>
+
+          <table className="min-w-full divide-y divide-gray-200 bg-white shadow-md rounded-lg">
+            <thead className="bg-gray-200">
+              <tr>
+                <th
+                  scope="col"
+                  className="px-3 py-3 text-left text-xs font-medium text-gray-900 uppercase tracking-wider"
+                >
+                  Fullname
+                </th>
+
+                <th
+                  scope="col"
+                  className="px-3 py-3 text-left text-xs font-medium text-gray-900 uppercase tracking-wider"
+                >
+                  Mobile Number
+                </th>
+                <th
+                  scope="col"
+                  className="px-3 py-3 text-left text-xs font-medium text-gray-900 uppercase tracking-wider"
+                >
+                  Number Of Licenses
+                </th>
+                <th
+                  scope="col"
+                  className="px-3 py-3 text-left text-xs font-medium text-gray-900 uppercase tracking-wider"
+                >
+                  Email
+                </th>
+                <th
+                  scope="col"
+                  className="px-3 py-3 text-left text-xs font-medium text-gray-900 uppercase tracking-wider"
+                >
+                  Actions
+                </th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {currentCustomers.map((customer) => (
+                <tr key={customer.customerId}>
+                  <td className="px-3 py-4 whitespace-nowrap">
+                    <span
+                      className={`${
+                        customer.present === "AVAILABLE"
+                          ? "text-black-100 bg-green-300 border "
+                          : customer.present === "UNAVAILABLE"
+                          ? "text-black-100 bg-red-300 border"
+                          : "bg-gray-100 text-gray-500 border border-gray-500"
+                      } px-2 py-1 rounded-md`}
+                    >
+                      {customer.firstName} {customer.lastName}
+                    </span>
+                  </td>
+                  <td className="px-3 py-4 whitespace-nowrap">
+                    {customer.mobileNumber}
+                  </td>
 
+                  <td className="px-3 py-4 whitespace-nowrap">
+                    {customer.licenseOfCustomerDTOS &&
+                    customer.licenseOfCustomerDTOS.length > 0 ? (
+                      <span
+                        onClick={() =>
+                          openLicenseModal(customer.licenseOfCustomerDTOS)
+                        }
+                        className="inline-flex items-center justify-center w-8 h-8 
+    rounded-full bg-green-500 text-white text-sm font-bold"
+                      >
+                        {customer.licenseOfCustomerDTOS.length}
+                      </span>
+                    ) : (
+                      <span
+                        className="inline-flex items-center justify-center w-8 h-8 
+    rounded-full bg-red-600 text-white text-sm font-bold"
+                      >
+                        0
+                      </span>
+                    )}
+                  </td>
 
+                  <td className="px-3 py-4 whitespace-nowrap">
+                    {customer.email}
+                  </td>
+                  <td className="px-3 py-4 whitespace-nowrap text-sm font-medium">
+                    <button
+                      onClick={() => handleEditClick(customer)}
+                      className="bg-indigo-100 text-indigo-600 hover:bg-indigo-200 px-3 mx-3 py-1 rounded-md"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() =>
+                        handleDeleteCustomerById(customer.customerId)
+                      }
+                      className="bg-red-100 text-red-600 hover:bg-red-200 px-3 mx-3 py-1 rounded-md"
+                    >
+                      Delete
+                    </button>
+                    {/* Add the button to add a license */}
+                    <button
+                      onClick={() => handleAddLicenseClick(customer.customerId)} // Pass customer ID dynamically
+                      className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+                    >
+                      Add License to Customer
+                    </button>
 
+                    <button
+  onClick={() => handleCustomerStatusChange(customer)} // Pass customer ID dynamically
+  className={`px-4 mx-2 py-2 rounded-md text-white  ${
+    customer.present === "AVAILABLE" ? "bg-green-500" : "bg-red-500"
+  }`}
+>
+  {customer.present}
+</button>
 
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
 
+        {licenseModalVisible && (
+          <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-50 z-50">
+            <div className="bg-white p-6 rounded-lg shadow-lg w-96">
+              <h2 className="text-xl font-bold mb-4">License Details</h2>
+              {currentCustomerLicenses.length > 0 ? (
+                <ul className="space-y-2">
+                  {currentCustomerLicenses.map((license, index) => (
+                    <li
+                      key={license.licenseOfCustomerId || index}
+                      className="border p-2 rounded-md"
+                    >
+                      <p>
+                        <strong>License Name:</strong> {license.licenseName}
+                      </p>
+                      <p>
+                        <strong>Status:</strong> {license.status}
+                      </p>
+                      <p>
+                        <strong>Issue Date:</strong>{" "}
+                        {license.issueDate || "Not Issued"}
+                      </p>
+                      <p>
+                        <strong>Expiry Date:</strong>{" "}
+                        {license.expiryDate || "No Expiry"}
+                      </p>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p>No licenses found.</p>
+              )}
+              <div className="flex justify-end mt-4">
+                <button
+                  onClick={closeLicenseModal}
+                  className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
 
-
-      {licenseModalVisible && (
-  <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-50 z-50">
-    <div className="bg-white p-6 rounded-lg shadow-lg w-96">
-      <h2 className="text-xl font-bold mb-4">License Details</h2>
-      {currentCustomerLicenses.length > 0 ? (
-        <ul className="space-y-2">
-          {currentCustomerLicenses.map((license, index) => (
-            <li key={license.licenseOfCustomerId || index} className="border p-2 rounded-md">
-              <p>
-                <strong>License Name:</strong> {license.licenseName}
-              </p>
-              <p>
-                <strong>Status:</strong> {license.status}
-              </p>
-              <p>
-                <strong>Issue Date:</strong> {license.issueDate || "Not Issued"}
-              </p>
-              <p>
-                <strong>Expiry Date:</strong> {license.expiryDate || "No Expiry"}
-              </p>
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <p>No licenses found.</p>
-      )}
-      <div className="flex justify-end mt-4">
-        <button
-          onClick={closeLicenseModal}
-          className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
-        >
-          Close
-        </button>
-      </div>
-    </div>
-  </div>
-)}
-
-
-      {showEditModal && (
-        <EditCustomerPopup
-          customer={selectedCustomer}
-          showModal={showEditModal}
-          onClose={handleCloseEditModal}
-          fetchCustomers={fetchCustomers}
+        {showEditModal && (
+          <EditCustomerPopup
+            customer={selectedCustomer}
+            showModal={showEditModal}
+            onClose={handleCloseEditModal}
+            fetchCustomers={fetchCustomers}
+          />
+        )}
+        {/* Show the AddLicenseModal */}
+        <LicenseAddToCustomer
+          customerId={selectedCustomerId}
+          showModal={showAddLicenseModal}
+          onClose={handleCloseModal}
         />
-      )}
-       {/* Show the AddLicenseModal */}
-       <LicenseAddToCustomer
-        customerId={selectedCustomerId}
-        showModal={showAddLicenseModal}
-        onClose={handleCloseModal}
-      />
 
-      <div className="flex justify-between items-center mt-4">
-        <button
-          onClick={handlePrevPage}
-          disabled={currentPage === 1}
-          className="px-4 py-2 bg-gray-300 rounded-md hover:bg-gray-400 disabled:bg-gray-200"
-        >
-          Previous
-        </button>
-        <span className="text-sm">Page {currentPage} of {totalPages}</span>
-        <button
-          onClick={handleNextPage}
-          disabled={currentPage === totalPages}
-          className="px-4 py-2 bg-gray-300 rounded-md hover:bg-gray-400 disabled:bg-gray-200"
-        >
-          Next
-        </button>
+        <div className="flex justify-between items-center mt-4">
+          <button
+            onClick={handlePrevPage}
+            disabled={currentPage === 1}
+            className="px-4 py-2 bg-gray-300 rounded-md hover:bg-gray-400 disabled:bg-gray-200"
+          >
+            Previous
+          </button>
+          <span className="text-sm">
+            Page {currentPage} of {totalPages}
+          </span>
+          <button
+            onClick={handleNextPage}
+            disabled={currentPage === totalPages}
+            className="px-4 py-2 bg-gray-300 rounded-md hover:bg-gray-400 disabled:bg-gray-200"
+          >
+            Next
+          </button>
+        </div>
       </div>
-    </div>
-
     </>
   );
 };

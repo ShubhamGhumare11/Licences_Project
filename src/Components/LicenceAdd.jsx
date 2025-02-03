@@ -115,7 +115,8 @@ const LicenceAdd = ({ isOpen, onClose,onLicenseAdded }) => {
     try {
       const response = await api.post("/api/licenseList/saveLicense", {
         licenseName: licenseName,
-        validTill: validTill, // Include validity in the request payload
+        validTill: validTill, 
+    
       });
       onLicenseAdded();
       console.log("Response from license save post: ", response.data);
@@ -163,6 +164,7 @@ const LicenceAdd = ({ isOpen, onClose,onLicenseAdded }) => {
               required
             />
           </div>
+          
           <div>
             <label htmlFor="validTill" className="block text-sm font-medium text-gray-700">
               Validity

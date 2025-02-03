@@ -6,17 +6,16 @@ import {
   useLocation,
 } from "react-router-dom";
 import Navbar from "./Components/Navbar";
-// import Home from "./Pages/Home";
 import AdminSection from "./Pages/AdminSection";
 import UserSection from "./Pages/UserSection";
-import WhatsappChat from "./Components/WhatsappChat ";
+import WhatsappChat from "./Components/User/WhatsappChat ";
 import LicenseManager from "./Components/LicenseManager";
+import InterestedUserApplyForm from "./Components/User/InterestedUserApplyForm";
 
+import Login from "./Components/Login";
+import UserProfile from "./Components/UserProfile";
 
-
-
-
-
+import RoleProtectedRoute from "./Components/RoleProtectedRoute ";
 
 const ScrollToTop = () => {
   const location = useLocation();
@@ -34,17 +33,54 @@ function App() {
       <Navbar />
       <ScrollToTop />
       <Routes>
-        {/* <Route path="/" element={<Home />} /> */}
-                <Route path="/adminsection" element={<AdminSection />} />
-                <Route path="/user" element={<UserSection />} />
-                <Route path="/licensemanager" element={<LicenseManager />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/userprofile" element={<UserProfile />} />
 
-                <Route path="/whatsapp-chat" element={<WhatsappChat />} />
+        <Route path="/unauthorized" element={<h2>Access Denied</h2>} />
 
 
 
-      
 
+
+
+        {/* Admin Routes */}
+        {/* <Route path="/adminsection" element={<AdminSection />} />
+        <Route path="/licensemanager" element={<LicenseManager />} /> */}
+        
+
+        
+
+<Route
+          path="/licensemanager"
+          element={
+            <RoleProtectedRoute allowedRoles={["ADMIN"]}>
+              <LicenseManager />
+            </RoleProtectedRoute>
+          }
+        />
+        
+<Route
+          path="/adminsection"
+          element={
+            <RoleProtectedRoute allowedRoles={["ADMIN"]}>
+              <AdminSection />
+            </RoleProtectedRoute>
+          }
+        />
+
+
+
+
+
+
+
+        {/* user routes */}
+        <Route path="/user" element={<UserSection />} />
+        <Route
+          path="/interesteduserapplyform"
+          element={<InterestedUserApplyForm />}
+        />
+        <Route path="/whatsapp-chat" element={<WhatsappChat />} />
       </Routes>
       {/* <Footer /> */}
     </Router>

@@ -51,6 +51,8 @@ const LicenseManagement = () => {
   };
 
   const updateLicenseStatus = async (newStatus) => {
+
+    console.log(newStatus)
     try {
       const response = await api.patch(
         `api/licenseOfCustomerController/updateStatus`,

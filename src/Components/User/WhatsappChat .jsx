@@ -1,15 +1,20 @@
 import React from "react";
 
-const WhatsappChat = () => {
-  // Replace with your desired WhatsApp phone number and message
-  const whatsappPhoneNumber = "1234567890"; // Replace with actual phone number
-  const message = "Hi, I want to apply for the license.";
+const WhatsappChat = ({ message }) => {
+  const whatsappPhoneNumber = "7875151936"; // Correct format
+  // const message = "Hi, I want to apply for the license. Please assist! 😊";
 
-  const whatsappLink = `https://wa.me/${whatsappPhoneNumber}?text=${encodeURIComponent(message)}`;
+  // Properly encode the message to handle special characters
+  const encodedMessage = encodeURIComponent(message);
+
+  // Create the WhatsApp link with the encoded message
+  const whatsappLink = `https://wa.me/${whatsappPhoneNumber}?text=${encodedMessage}`;
+
+  console.log("WhatsApp Link:", whatsappLink); // Debug: Check the generated URL
 
   return (
     <div className="p-6">
-      <div className="max-w-sm mx-auto bg-cyan-200 rounded-lg shadow-lg p-6">
+      <div className="max-w-sm mx-auto bg-cyan-300 rounded-lg shadow-lg p-6">
         <h2 className="text-xl font-bold text-center text-gray-800 mb-4">
           Chat with Us to Apply for License
         </h2>

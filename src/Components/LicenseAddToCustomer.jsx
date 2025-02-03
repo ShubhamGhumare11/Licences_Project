@@ -6,6 +6,8 @@ const LicenseAddToCustomer = ({ customerId, showModal, onClose }) => {
   const [selectedLicense, setSelectedLicense] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [successMessage,setSuccessMessage ] = useState(null);
+
 
   // Fetch the list of licenses
   useEffect(() => {
@@ -48,12 +50,14 @@ const LicenseAddToCustomer = ({ customerId, showModal, onClose }) => {
       );
       if (response.data.code === "SUCCESS") {
         alert("License added successfully!");
+        setSuccessMessage("License added successfully!");
         onClose(); // Close the modal after success
       } else {
-        setError("Failed to add license");
+        setError("Cutomer already applied for this license.");
+   
       }
     } catch (err) {
-      setError("Cutomer already applied for this license.");
+      setError("Failed to add license : Customer Is Inactive");
     }
   };
 
@@ -63,6 +67,7 @@ const LicenseAddToCustomer = ({ customerId, showModal, onClose }) => {
         <div className="bg-white p-6 rounded-lg shadow-lg w-96">
           <h2 className="text-xl font-bold mb-4">Add License to Customer</h2>
           {error && <div className="text-red-500 mb-4">{error}</div>}
+          {successMessage && <div className="text-green-500 mb-4">{successMessage}</div>}
           {loading ? (
             <div>Loading...</div>
           ) : (
