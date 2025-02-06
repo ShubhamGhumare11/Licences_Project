@@ -72,10 +72,8 @@ If you have any questions, feel free to contact us/ Chat with us.
 
 
 
-    // Set the message to pass it to the `WhatsappChat` component
     setMessage(formattedMessage);
 
-    // Mark the form as submitted to render the WhatsApp component
     setIsFormSubmitted(true);
   };
 
@@ -213,19 +211,7 @@ If you have any questions, feel free to contact us/ Chat with us.
        </div>
         
 
-          {/* State */}
-          {/* <div className="space-y-1">
-            <label className="block text-sm font-medium text-gray-700">State</label>
-            <input
-              type="text"
-              name="state"
-              placeholder="State"
-              value={formData.state}
-              onChange={handleInputChange}
-              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-              required
-            />
-          </div> */}
+     
 
             {/* State Dropdown */}
         <div className="space-y-1">

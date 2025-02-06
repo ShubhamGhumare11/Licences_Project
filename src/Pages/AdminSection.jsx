@@ -45,7 +45,7 @@ const AdminSection = () => {
           onClick={() => setActiveTab("customer")}
           className={`w-48 px-6 py-3 text-lg font-medium rounded-md transition-all duration-300 ${
             activeTab === "customer"
-              ? "bg-blue-500 text-white shadow-lg"
+              ? "bg-purple-800 text-white shadow-lg"
               : "bg-gray-200 text-gray-700 hover:bg-gray-300"
           }`}
         >
@@ -55,7 +55,7 @@ const AdminSection = () => {
           onClick={() => setActiveTab("license")}
           className={`w-48 px-6 py-3 text-lg font-medium rounded-md transition-all duration-300 ${
             activeTab === "license"
-              ? "bg-blue-500 text-white shadow-lg"
+              ? "bg-purple-800 text-white shadow-lg"
               : "bg-gray-200 text-gray-700 hover:bg-gray-300"
           }`}
         >

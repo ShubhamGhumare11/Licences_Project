@@ -693,8 +693,10 @@
 import React, { useState, useEffect } from "react";
 import LicenseAddToCustomer from "./LicenseAddToCustomer";
 import EditCustomerPopup from "./EditCustomerPopup";
+import { showConfirm,showToast } from "../Utils/toastUtils";
+import { FaRegTrashAlt  } from 'react-icons/fa'; // Importing the trash icon from react-icons
 
-import api from "../Utils/api";
+import api from "../Utils/api1";
 const CutomerManagement = () => {
   const [customers, setCustomers] = useState([]);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -751,7 +753,7 @@ const [currentCustomerLicenses, setCurrentCustomerLicenses] = useState([]); // F
     try {
       const response = await api.post("/api/customer/saveCustomer", newUser);
       if (response.data.code === "Success") {
-        alert("Customer added successfully!");
+showToast("Customer Added...!","success")
         fetchCustomers(); // Refresh the customer list
         setShowModal(false); // Close the modal
         setNewUser({ // Reset the form
@@ -779,7 +781,10 @@ const [currentCustomerLicenses, setCurrentCustomerLicenses] = useState([]); // F
       // const response = await axios.delete(
       //   `http://localhost:8080/api/customer/DeleteCustomerById?CustomerId=${customerId}`
       // );
+      const confirmation =  await showConfirm("Are you sure to delete?");
 
+
+      if (confirmation) {
       const response = await api.delete("/api/customer/DeleteCustomerById", {
         params: { CustomerId: customerId },
     });
@@ -790,15 +795,47 @@ const [currentCustomerLicenses, setCurrentCustomerLicenses] = useState([]); // F
         // Update the state by removing the deleted customer
       
     fetchCustomers();
-        alert("Customer deleted successfully!");
+    showToast("Customer Deleted...!","success")
+
+
       } else {
-        alert("Failed to delete the customer.");
+
+        // alert("Failed to delete the customer.");
+        showToast("Failed to delete the customer.","error")
+
       }
+    }
     } catch (error) {
       console.error("Error deleting customer:", error);
       alert("Error deleting the customer.");
     }
+    
   };
+
+
+
+  const handleDeleteLicense = async (licenseOfCustomerId) => {
+    try {
+      const response = await api.delete(
+        `/api/licenseOfCustomerController/deleteLicenseOfCustomer`,
+        {
+          params: { licenseOfCustomerId: licenseOfCustomerId },
+        }
+      );
+console.log(response.data.code)
+      if (response.data.code=== "ALL OK") {
+        showToast("License deleted successfully", "success");
+       setLicenseModalVisible(false);
+        fetchCustomers();
+      } else {
+        showToast("Failed to delete license", "error");
+      }
+    } catch (error) {
+      console.error("Error deleting license:", error);
+      alert("Error deleting license");
+    }
+  };
+
 
   const handleCustomerStatusChange = async (customer) => {
     try {
@@ -822,7 +859,9 @@ fetchCustomers();
 
       if (response.data.code === "SUCCESS") {
         // If the response is successful, update the UI or state
-        alert("Customer status updated successfully!");
+        // alert("Customer status updated successfully!");    
+        showToast("Customer status updated successfully...!","success ")
+
         // Here, you could also update the customer status in the local state/UI
       } else {
         alert(`Failed to update status: ${response.data.message}`);
@@ -1154,7 +1193,7 @@ fetchCustomers();
           <div className="flex justify-end mb-4">
             <button
               onClick={() => setShowModal(true)}
-              className="bg-blue-500 text-white px-4 py-2 rounded bg-green-500 hover:bg-green-700 ml-auto"
+              className="bg-blue-500 text-white px-4 py-2 rounded bg-green-700 hover:bg-green-700 ml-auto"
             >
               Add Customer +
             </button>
@@ -1289,8 +1328,14 @@ fetchCustomers();
                   {currentCustomerLicenses.map((license, index) => (
                     <li
                       key={license.licenseOfCustomerId || index}
-                      className="border p-2 rounded-md"
+                      className="border p-2 rounded-md relative"
                     >
+                   <div
+                  onClick={() => handleDeleteLicense(license.licenseOfCustomerId)}
+                  className="absolute top-2 right-2 text-red-500 cursor-pointer hover:text-red-700"
+                >
+                  <FaRegTrashAlt className="text-xl" />
+                </div>
                       <p>
                         <strong>License Name:</strong> {license.licenseName}
                       </p>

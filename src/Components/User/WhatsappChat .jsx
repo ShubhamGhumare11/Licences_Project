@@ -1,16 +1,11 @@
 import React from "react";
 
 const WhatsappChat = ({ message }) => {
-  const whatsappPhoneNumber = "7875151936"; // Correct format
-  // const message = "Hi, I want to apply for the license. Please assist! 😊";
-
-  // Properly encode the message to handle special characters
+  const whatsappPhoneNumber = "7447376717"; 
   const encodedMessage = encodeURIComponent(message);
-
-  // Create the WhatsApp link with the encoded message
   const whatsappLink = `https://wa.me/${whatsappPhoneNumber}?text=${encodedMessage}`;
 
-  console.log("WhatsApp Link:", whatsappLink); // Debug: Check the generated URL
+  console.log("WhatsApp Link:", whatsappLink); 
 
   return (
     <div className="p-6">

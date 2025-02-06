@@ -1,20 +1,19 @@
-// import React from 'react';
+// // import React from 'react';
   
-//   const Api = () =>  {
-// 	return (
-// 	  <div>
-// 	  </div>
-// 	);
-//   }
+// //   const Api = () =>  {
+// // 	return (
+// // 	  <div>
+// // 	  </div>
+// // 	);
+// //   }
   
-//   export default Api;
+// //   export default Api;
   
-import axios from "axios";
+// import axios from "axios";
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+ 
+// const api = axios.create({
+//   baseURL: API_BASE_URL,
+// });
 
-const api = axios.create({
-  baseURL: API_BASE_URL,
-});
-
-export default api;
+// export default api;

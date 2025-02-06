@@ -98,7 +98,7 @@ const api = axios.create({
 
 // List of APIs that do not require authentication
 const publicEndpoints = [
-  "/logcdsin",
+  "/login",
 //   "/auth/register",
 //   "/public/data",
 ];

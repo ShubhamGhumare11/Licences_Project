@@ -13,10 +13,16 @@ import LicenseManager from "./Components/LicenseManager";
 import InterestedUserApplyForm from "./Components/User/InterestedUserApplyForm";
 
 import Login from "./Components/Login";
+import UserRegisterPopup from "./Components/UserRegisterPopup";
+import UnAuthorize from "./Components/UnAuthorize";
+
+
 import UserProfile from "./Components/UserProfile";
 
 import RoleProtectedRoute from "./Components/RoleProtectedRoute ";
-
+import { AuthProvider } from "./Utils/AuthContext"; // Import AuthProvider
+import { ToastContainer } from "react-toastify"; // Import ToastContainer
+import "react-toastify/dist/ReactToastify.css"; // Import Toastify CSS globally
 const ScrollToTop = () => {
   const location = useLocation();
 
@@ -29,61 +35,56 @@ const ScrollToTop = () => {
 
 function App() {
   return (
-    <Router>
-      <Navbar />
-      <ScrollToTop />
-      <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/userprofile" element={<UserProfile />} />
+    <AuthProvider>
+      <Router>
+        <Navbar />
+        <ScrollToTop />
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<UserRegisterPopup mode="inline" />} />
 
-        <Route path="/unauthorized" element={<h2>Access Denied</h2>} />
+          <Route path="/userprofile" element={<UserProfile />} />
 
+          <Route path="/unauthorized" element={<UnAuthorize/>} />
 
-
-
-
-
-        {/* Admin Routes */}
-        {/* <Route path="/adminsection" element={<AdminSection />} />
+          {/* Admin Routes */}
+          {/* <Route path="/adminsection" element={<AdminSection />} />
         <Route path="/licensemanager" element={<LicenseManager />} /> */}
-        
 
-        
-
-<Route
-          path="/licensemanager"
-          element={
-            <RoleProtectedRoute allowedRoles={["ADMIN"]}>
+          <Route
+            path="/licensemanager"
+            element={
+              <RoleProtectedRoute allowedRoles={["ADMIN"]}>
               <LicenseManager />
-            </RoleProtectedRoute>
-          }
-        />
-        
-<Route
-          path="/adminsection"
-          element={
-            <RoleProtectedRoute allowedRoles={["ADMIN"]}>
+              </RoleProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/adminsection"
+            element={
+              <RoleProtectedRoute allowedRoles={["ADMIN"]}>
               <AdminSection />
-            </RoleProtectedRoute>
-          }
-        />
+               </RoleProtectedRoute>
+            }
+          />
 
 
 
+          {/* user routes */}
+          <Route path="/" element={<UserSection />} />
+          <Route
+            path="/interesteduserapplyform"
+            element={<InterestedUserApplyForm />}
+          />
+          <Route path="/whatsapp-chat" element={<WhatsappChat />} />
+        </Routes>
 
+        <ToastContainer /> {/* ToastContainer should be here, or at the root of the app */}
 
-
-
-        {/* user routes */}
-        <Route path="/user" element={<UserSection />} />
-        <Route
-          path="/interesteduserapplyform"
-          element={<InterestedUserApplyForm />}
-        />
-        <Route path="/whatsapp-chat" element={<WhatsappChat />} />
-      </Routes>
-      {/* <Footer /> */}
-    </Router>
+        {/* <Footer /> */}
+      </Router>
+    </AuthProvider>
   );
 }
 

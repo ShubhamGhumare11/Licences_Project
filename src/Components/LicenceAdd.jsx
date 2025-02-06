@@ -100,7 +100,7 @@
 
 
 import React, { useState } from "react";
-import api from "../Utils/api";
+import api from "../Utils/api1";
 const LicenceAdd = ({ isOpen, onClose,onLicenseAdded }) => {
   const [licenseName, setLicenseName] = useState("");
   const [validTill, setValidtill] = useState(""); // State for validity dropdown
@@ -123,7 +123,7 @@ const LicenceAdd = ({ isOpen, onClose,onLicenseAdded }) => {
       setResponseMessage(response.data.message);
       setTimeout(() => {
         setResponseMessage(""); // Clear the message after 2 seconds
-      }, 3000);
+      }, 2000);
       setLicenseName(""); // Clear the input field after successful submission
       setValidtill(""); // Clear the validity dropdown
     } catch (error) {

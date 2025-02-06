@@ -1,11 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../../Utils/api1";
+import { AuthContext } from "../../Utils/AuthContext";
+import UserRegisterPopup from "../../Components/UserRegisterPopup"; // Import Popup Component
 
 const LicenseGrid = () => {
   const [licenses, setLicenses] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const { user } = useContext(AuthContext); // Get user from AuthContext
+  const [showRegisterPopup, setShowRegisterPopup] = useState(false); // Control popup
+  const [selectedLicense, setSelectedLicense] = useState(null); // Store selected license
 
   const navigate = useNavigate();
 
@@ -47,7 +52,17 @@ const LicenseGrid = () => {
   // Navigate to InterestedUserApplyForm and pass the selected license
   const handleApply = (licenseName) => {
     console.log("Selected License: ", licenseName);
-    navigate("/interesteduserapplyform", { state: { interestedToApply: licenseName } });
+    // navigate("/interesteduserapplyform", { state: { interestedToApply: licenseName } });
+
+
+
+    if (user) {
+      // If user is logged in, navigate to InterestedUserApplyForm
+      navigate("/interesteduserapplyform", { state: { interestedToApply: licenseName } });
+    } else {
+      // If user is not logged in, navigate to UserRegistration
+      setSelectedLicense(licenseName);
+      setShowRegisterPopup(true);    }
   };
 
   // Displaying available licenses
@@ -85,6 +100,11 @@ const LicenseGrid = () => {
           <div className="text-center py-6 text-gray-500">No licenses available.</div>
         )}
       </div>
+
+         {/* User Registration Popup */}
+         {showRegisterPopup && (
+        <UserRegisterPopup isOpen={showRegisterPopup} onClose={() => setShowRegisterPopup(false)} />
+      )}
     </div>
   );
 };

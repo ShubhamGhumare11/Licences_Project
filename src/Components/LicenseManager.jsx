@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios"; // Importing axios for API calls
 import LicenceAdd from "./LicenceAdd"; // Import the License Add Modal Component
-import api from "../Utils/api";
+import api from "../Utils/api1";
+import { showConfirm } from "../Utils/toastUtils";
 
 const LicenseManager = () => {
   const [licenses, setLicenses] = useState([]); // Initialize licenses as an empty array
@@ -45,26 +46,62 @@ const LicenseManager = () => {
   const handlePrevPage = () => currentPage > 1 && setCurrentPage(currentPage - 1);
 
 
-  const deleteLicense = async (licenseListID) => {
-    try {
-        const response = await api.delete(`/api/licenseList/deleteLicenseListByID`, {
-            params: { licenseListID: licenseListID },
-        });
+//   const deleteLicense = async (licenseListID) => {
+//     try {
 
-        if (response.data.code === "SUCCESS") {
-            setLicenses((prevLicenses) => prevLicenses.filter((license) => license.licenseID !== licenseListID));
-            alert("License deleted successfully!");
-        } else {
-            alert(`Failed to delete license: ${response.data.message}`);
-        }
-    } catch (error) {
-        console.error("Error deleting license:", error);
-        if (error.response && error.response.status === 409) {
-            alert("Cannot delete license as it is linked to other entities.");
-        } else {
-            alert("An unexpected error occurred while deleting the license.");
-        }
+//       const confirmation = await showConfirm("Are you sure you want to Delete License?");
+
+//       if (confirmation) {
+
+//       const response = await api.delete(`/api/licenseList/deleteLicenseListByID`, {
+//             params: { licenseListID: licenseListID },
+//         });
+
+//         if (response.data.code === "SUCCESS") {
+//             setLicenses((prevLicenses) => prevLicenses.filter((license) => license.licenseID !== licenseListID));
+//             // alert("License deleted successfully!");
+//         } else {
+//             alert(`Failed to delete license: ${response.data.message}`);
+//         }
+//       }
+//     } catch (error) {
+//         console.error("Error deleting license:", error);
+//         if (error.response && error.response.status === 409) {
+//             alert("Cannot delete license as it is linked to other entities.");
+//         } else {
+//             alert("An unexpected error occurred while deleting the license.");
+//         }
+//     }
+  
+
+// };
+
+
+const deleteLicense = async (licenseListID) => {
+  try {
+    const confirmation = await showConfirm("Are you sure you want to Delete License?");
+
+    // If the user confirmed (clicked Yes)
+    if (confirmation) {
+      const response = await api.delete(`/api/licenseList/deleteLicenseListByID`, {
+        params: { licenseListID: licenseListID },
+      });
+
+      if (response.data.code === "SUCCESS") {
+        setLicenses((prevLicenses) => prevLicenses.filter((license) => license.licenseID !== licenseListID));
+      } else {
+        alert(`Failed to delete license: ${response.data.message}`);
+      }
     }
+  } catch (error) {
+    // This will only be triggered if there's an error other than user canceling
+    console.error("Error deleting license:", error);
+    if (error.response && error.response.status === 409) {
+      alert("Cannot delete license as it is linked to other entities.");
+    } else {
+      alert("An unexpected error occurred while deleting the license.");
+    }
+  }
 };
 
   

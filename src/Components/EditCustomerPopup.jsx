@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import api from "../Utils/api";
+import api from "../Utils/api1";
+import { showToast } from "../Utils/toastUtils";
 
 const EditCustomerPopup = ({ customer, showModal, onClose, fetchCustomers }) => {
   const [updatedCustomer, setUpdatedCustomer] = useState({ ...customer });
@@ -23,7 +24,9 @@ const EditCustomerPopup = ({ customer, showModal, onClose, fetchCustomers }) => 
         }
       );
       if (response.data.code === "SUCCESS") {
-        alert("Customer updated successfully!");
+        // alert("Customer updated successfully!");
+        showToast("Customer Updated...!","success")
+
         fetchCustomers(); // Refresh customer list
         onClose(); // Close the modal
       } else {
@@ -215,3 +218,6 @@ const EditCustomerPopup = ({ customer, showModal, onClose, fetchCustomers }) => 
 };
 
 export default EditCustomerPopup;
+
+
+

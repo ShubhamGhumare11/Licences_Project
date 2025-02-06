@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
-import api from "../Utils/api";
+import api from "../Utils/api1";
 import UpdateStatusPopup from "./UpdateStatusPopup";
+import { showToast } from "../Utils/toastUtils";
+import { FaRegTrashAlt  } from "react-icons/fa";
 
 const LicenseManagement = () => {
   const [customers, setCustomers] = useState([]);
@@ -45,6 +47,34 @@ const LicenseManagement = () => {
     }
   };
 
+
+
+
+
+  const deleteLicense = async (licenseOfCustomerId) => {
+    try {
+      const response = await api.delete(
+        `/api/licenseOfCustomerController/deleteLicenseOfCustomer`,
+        {
+          params: { licenseOfCustomerId: licenseOfCustomerId },
+        }
+      );
+console.log(response.data.code)
+      if (response.data.code=== "ALL OK") {
+        showToast("License deleted successfully", "success");
+        fetchCustomers();
+      } else {
+        showToast("Failed to delete license", "error");
+      }
+    } catch (error) {
+      console.error("Error deleting license:", error);
+      alert("Error deleting license");
+    }
+  };
+
+
+
+
   const handleStatusChange = (license) => {
     setSelectedLicense(license);
     setIsPopupOpen(true);
@@ -66,10 +96,14 @@ const LicenseManagement = () => {
       );
 
       if (response.data.code === "Success") {
-        alert("License status updated successfully");
+        // alert("License status updated successfully");
+        showToast("License status updated...!","success")
+
         fetchCustomers();
       } else {
         alert("Failed to update license status");
+        showToast("Failed to update license status","error")
+
       }
     } catch (error) {
       console.error("Error changing license status:", error);
@@ -212,13 +246,18 @@ currentCustomers.forEach((customer) => {
   </span>
 </td>
 
-                  <td className="px-3 py-4">
-                    <button
+<td className="px-3 py-4 flex items-center gap-3">                    <button
                       onClick={() => handleStatusChange(row.license)}
                       className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-yellow-600"
                     >
                       Change Status
                     </button>
+                    <div 
+    onClick={() => deleteLicense(row.license.licenseOfCustomerId)}
+    className="bg-red-500 p-2 rounded-md cursor-pointer hover:bg-red-700"
+  >
+    <FaRegTrashAlt className="text-white text-xl" />
+  </div>
                   </td>
                 </tr>
               ))}

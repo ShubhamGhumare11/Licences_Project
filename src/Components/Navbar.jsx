@@ -1,10 +1,12 @@
-import React, { useState } from "react";
-import { getUserRole } from "../Utils/authUtils";
-import { getTokenDetails } from "../Utils/authUtils";
+import React, { useState,useContext  } from "react";
+
+import  {AuthContext}  from "../Utils/AuthContext"; 
+import UserRegisterPopup from "../Components/UserRegisterPopup"; // Import popup
 
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [showRegisterPopup, setShowRegisterPopup] = useState(false); // Control popup state
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -13,16 +15,16 @@ const Navbar = () => {
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
-  const userRoles = getUserRole() || [];
-  const userDetails = getTokenDetails();
-  const isLoggedIn = !!userDetails; // Check if user is logged in
 
-  console.log("user role in Navbar"+userRoles)
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("refreshToken");
-    window.location.href = "/login"; // Redirect to login page
-  };
+  const { user, logout } = useContext(AuthContext);
+
+
+ // Extract user details from context
+ const userRoles = user?.roles || [];
+ const userEmail = user?.sub || "Guest";
+
+ console.log("user in Navbar: " + JSON.stringify(user));
+ 
   return (
     <nav className="bg-gray-800">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -120,17 +122,23 @@ const Navbar = () => {
 
           {/* Desktop Navigation */}
 
-          {(Array.isArray(userRoles) && userRoles.includes("ADMIN"))? (
+           {(Array.isArray(userRoles) && userRoles.includes("ADMIN")) && (
   <div className="hidden sm:flex sm:items-center sm:space-x-4">
+      <a
+    href="/"
+    className="rounded-md  px-3 py-2 text-sm font-medium text-white"
+  >
+    Home
+  </a>
   <a
     href="adminsection"
-    className="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white"
+    className="rounded-md px-3 py-2 text-sm font-medium text-white"
   >
     Dashboard
   </a>
   <a
     href="licensemanager"
-    className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
+    className="rounded-md px-3 py-2 text-sm font-medium text-white hover:bg-gray-700 hover:text-white"
   >
     Add License 
   </a>
@@ -139,7 +147,7 @@ const Navbar = () => {
   {/* Avatar Icon */}
   
 </div>
-          ):null}
+          )}
         <div className="relative">
     <button
       type="button"
@@ -149,31 +157,43 @@ const Navbar = () => {
       <span className="sr-only">Open user menu</span>
       <img
         className="h-8 w-8 rounded-full"
-        src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+        src="https://ui-avatars.com/api/?name=Dummy+User&background=random"
         alt="Profile Avatar"
       />
     </button>
     {isDropdownOpen && (
               <div className="absolute right-0 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                {isLoggedIn ? (
+                {user ? (
                   <>
                     <a href="/userprofile" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                      Welcome {userDetails?.sub} - {userDetails?.roles?.join(", ")}
-                    </a>
-                    <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                    Welcome {user.sub} - {user.roles?.join(", ")}                    </a>
+                    {/* <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                       Settings
-                    </a>
+                    </a> */}
                     <button
-                      onClick={handleLogout}
+                    onClick={logout}
                       className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
                     >
-                      Sign Out
+                       <a href="/login" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                    Sign Out
+                  </a>
                     </button>
                   </>
                 ) : (
-                  <a href="/login" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                    Sign In
-                  </a>
+                    <>
+                    {/* <button
+                      onClick={() => setShowRegisterPopup(true)} // Open popup when clicked
+                      className="block w-full text-left px-4 py-2 text-sm text-blue-600 hover:bg-gray-100"
+                    >
+                      Register
+                    </button> */}
+                    <a href="/login" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                      Sign In
+                    </a>
+                    <a href="/register" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                      SignUp
+                    </a>
+                  </>
                 )}
               </div>
             )}
@@ -186,6 +206,12 @@ const Navbar = () => {
       {isMobileMenuOpen && (Array.isArray(userRoles) && userRoles.includes("ADMIN"))?(
         <div className="sm:hidden">
           <div className="space-y-1 px-2 pb-3 pt-2">
+          <a
+    href="/"
+    className="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white"
+  >
+    Home
+  </a>
             <a
               href="adminsection"
               className="block rounded-md bg-gray-900 px-3 py-2 text-base font-medium text-white"

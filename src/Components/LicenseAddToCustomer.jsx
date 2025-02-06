@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import api from "../Utils/api";
+import api from "../Utils/api1";
+import { showToast } from "../Utils/toastUtils";
 
 const LicenseAddToCustomer = ({ customerId, showModal, onClose }) => {
   const [licenses, setLicenses] = useState([]);
@@ -12,6 +13,9 @@ const LicenseAddToCustomer = ({ customerId, showModal, onClose }) => {
   // Fetch the list of licenses
   useEffect(() => {
     if (showModal) {
+      setSuccessMessage("")
+        setError("")
+        setSelectedLicense("")
       fetchLicenses();
     }
   }, [showModal]);
@@ -49,15 +53,22 @@ const LicenseAddToCustomer = ({ customerId, showModal, onClose }) => {
         `api/customer/assignLicence?customerId=${customerId}&licenceId=${selectedLicense}`
       );
       if (response.data.code === "SUCCESS") {
-        alert("License added successfully!");
+
         setSuccessMessage("License added successfully!");
+
         onClose(); // Close the modal after success
+        showToast("License added to  customer!","success")
+        
       } else {
         setError("Cutomer already applied for this license.");
    
       }
-    } catch (err) {
-      setError("Failed to add license : Customer Is Inactive");
+    } catch (error) {
+
+      console.log(error.response.data.message)
+
+
+      setError( error.response.data.message);
     }
   };
 

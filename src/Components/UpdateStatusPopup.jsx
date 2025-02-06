@@ -13,6 +13,8 @@ const UpdateStatusPopup = ({ isOpen, onClose, onStatusChange }) => {
       onClose(); // Close the modal after submitting
     } else {
       alert("Please select a status");
+      showToast("Please select a status.","info ")
+
     }
   };
 
