@@ -1,12 +1,16 @@
-import React, { useState,useContext  } from "react";
+import React, { useState,useContext ,useRef  } from "react";
+import { useNavigate } from "react-router-dom";
 
 import  {AuthContext}  from "../Utils/AuthContext"; 
 import UserRegisterPopup from "../Components/UserRegisterPopup"; // Import popup
+import CustomerLicenseListPopup from "../Components/User/CustomerLicenseListPopup"; // Import popup
+
 
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [showRegisterPopup, setShowRegisterPopup] = useState(false); // Control popup state
+  const dropdownRef = useRef(null);
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -18,24 +22,32 @@ const Navbar = () => {
 
   const { user, logout } = useContext(AuthContext);
 
-
  // Extract user details from context
  const userRoles = user?.roles || [];
  const userEmail = user?.sub || "Guest";
+ const navigate = useNavigate();
 
+ const handleRedirect = () => {
+   navigate("/customerlicenselist");
+ };
  console.log("user in Navbar: " + JSON.stringify(user));
  
   return (
     <nav className="bg-gray-800">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8"
+                  onMouseLeave={() => setIsDropdownOpen(false)}
+>
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <div className="flex-shrink-0">
+        
+            <a href="/">
             <img
               className="h-8 w-auto"
               src="https://tailwindui.com/plus/img/logos/mark.svg?color=indigo&shade=500"
               alt="Your Company"
             />
+            </a>
           </div>
 
           {/* Mobile Profile Icon */}
@@ -131,11 +143,23 @@ const Navbar = () => {
     Home
   </a>
   <a
-    href="adminsection"
+    href="#"
     className="rounded-md px-3 py-2 text-sm font-medium text-white"
   >
     Dashboard
   </a>
+  <a
+              href="customermanagement"
+              className="block rounded-md  px-3 py-2 text-base font-medium text-white"
+            >
+              CustomerManagement
+            </a>
+            <a
+              href="licensemanagement"
+              className="block rounded-md  px-3 py-2 text-base font-medium text-white"
+            >
+              LiceneseManagement
+            </a>
   <a
     href="licensemanager"
     className="rounded-md px-3 py-2 text-sm font-medium text-white hover:bg-gray-700 hover:text-white"
@@ -148,7 +172,10 @@ const Navbar = () => {
   
 </div>
           )}
-        <div className="relative">
+        <div className="relative"   ref={dropdownRef}
+            onMouseEnter={() => setIsDropdownOpen(true)}
+            // onMouseLeave={() => setIsDropdownOpen(false)}
+            >
     <button
       type="button"
       className="flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
@@ -162,14 +189,24 @@ const Navbar = () => {
       />
     </button>
     {isDropdownOpen && (
-              <div className="absolute right-0 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+              <div className="absolute right-0 mt-2 w-48 origin-top-right 
+              rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+              
+              onMouseEnter={() => setIsDropdownOpen(true)}  // Keep it open when hovering over dropdown
+              onMouseLeave={() => setIsDropdownOpen(false)}>
                 {user ? (
                   <>
                     <a href="/userprofile" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                    Welcome {user.sub} - {user.roles?.join(", ")}                    </a>
-                    {/* <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                      Settings
-                    </a> */}
+                    Welcome {user.sub} - {user.roles?.join(", ")}  </a>
+
+                    {(Array.isArray(userRoles) && userRoles.includes("USER")) && (
+                    <button 
+                    onClick={handleRedirect}
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                  >
+                    My Licenses
+                  </button>
+                    )}
                     <button
                     onClick={logout}
                       className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
@@ -208,15 +245,27 @@ const Navbar = () => {
           <div className="space-y-1 px-2 pb-3 pt-2">
           <a
     href="/"
-    className="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white"
+    className="rounded-md px-3 py-2 text-sm font-medium text-white"
   >
     Home
   </a>
             <a
               href="adminsection"
-              className="block rounded-md bg-gray-900 px-3 py-2 text-base font-medium text-white"
+              className="block rounded-md  px-3 py-2 text-base font-medium text-white"
             >
               Dashboard
+            </a>
+            <a
+              href="customermanagement"
+              className="block rounded-md  px-3 py-2 text-base font-medium text-white"
+            >
+              CustomerManagement
+            </a>
+            <a
+              href="licensemanagement"
+              className="block rounded-md  px-3 py-2 text-base font-medium text-white"
+            >
+              LiceneseManagement
             </a>
             <a
               href="licensemanager"
@@ -237,8 +286,11 @@ const Navbar = () => {
               Calendar
             </a> */}
           </div>
+    
         </div>
       ):null}
+
+
     </nav>
   );
 };

@@ -68,59 +68,7 @@ export const showToast = (message, type = "default") => {
   }
 };
 
-// // Optional: Create a confirmation dialog using Toastify (customize as per need)
-// export const showConfirm = async (message) => {
-//   return new Promise((resolve, reject) => {
-//     const result = window.confirm(message); // Use standard confirm box for simplicity
-//     if (result) {
-//       resolve(true);
-//     } else {
-//       reject(false);
-//     }
-//   });
-// };
 
-
-
-// Custom confirmation function
-// export const showConfirm = (message) => {
-//     return new Promise((resolve, reject) => {
-//       const toastId = toast(
-//         <div className="flex flex-col justify-center items-center">
-//           <p>{message}</p>
-//           <div className="flex space-x-4">
-//           <button
-//               onClick={() => {
-//                 toast.dismiss(toastId); // Close the toast
-//                 resolve(true); // Resolve the promise for "Yes"
-//               }}
-//               className="bg-green-500 text-white py-1 px-3 rounded mr-2"
-//             >
-//               Yes
-//             </button>
-//             <button
-//               onClick={() => {
-//                 toast.dismiss(toastId); // Close the toast
-//                 reject(false); // Reject the promise for "No"
-//               }}
-//               className="bg-red-500 text-white py-1 px-3 rounded"
-//             >
-//               No
-//             </button>
-//           </div>
-//         </div>,
-//         {
-//           position: "top-center",
-//           autoClose: false, // Keep it open until action is taken
-//           hideProgressBar: true,
-//           closeOnClick: false, // Don't allow closing by clicking on the toast
-//           pauseOnHover: false,
-//           draggable: false,
-//           // Optionally customize other toast properties
-//         }
-//       );
-//     });
-//   };
 
 
 

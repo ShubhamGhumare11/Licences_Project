@@ -137,7 +137,7 @@ const UserRegisterPopup = ({ isOpen, onClose, mode = "modal" }) => {
             placeholder="Enter Your Name"
             value={formData.name}
             onChange={handleChange}
-            className="w-full p-2 border rounded"
+            className="w-full p-2  text-black border rounded"
             required
           />
                       <label className="block text-gray-100">Email</label>
@@ -147,7 +147,7 @@ const UserRegisterPopup = ({ isOpen, onClose, mode = "modal" }) => {
             placeholder="Enter Your Email"
             value={formData.email}
             onChange={handleChange}
-            className="w-full p-2 border rounded"
+            className="w-full p-2  text-black border rounded"
             required
           />
                       <label className="block text-gray-100">Mobile Number</label>
@@ -158,7 +158,7 @@ const UserRegisterPopup = ({ isOpen, onClose, mode = "modal" }) => {
             placeholder="Enter Your Mobile Number"
             value={formData.mobileNo}
             onChange={handleChange}
-            className="w-full p-2 border rounded"
+            className="w-full p-2 text-black border rounded"
             required
           />
                       <label className="block text-gray-100">Password</label>
@@ -169,7 +169,7 @@ const UserRegisterPopup = ({ isOpen, onClose, mode = "modal" }) => {
             placeholder="Enter Your   Password"
             value={formData.password}
             onChange={handleChange}
-            className="w-full p-2 border rounded"
+            className="w-full p-2 text-black border rounded"
             required
           />
           <div className="flex justify-between">
@@ -189,6 +189,7 @@ const UserRegisterPopup = ({ isOpen, onClose, mode = "modal" }) => {
               Register
             </button>
           </div>
+          <div className="flex justify-center items-center"><p>Already have an account ?<a href="/login"> SignIn</a></p></div>
         </form>
       </div>
     </div>

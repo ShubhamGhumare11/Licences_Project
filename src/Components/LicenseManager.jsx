@@ -10,7 +10,7 @@ const LicenseManager = () => {
   const [showModal, setShowModal] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   
-  const licensesPerPage = 5;
+  const licensesPerPage = 6;
 
   const handleOpenPopup = () => {
     setIsPopupOpen(true); // Open the popup
@@ -108,8 +108,8 @@ const deleteLicense = async (licenseListID) => {
 
   return (
     <div className="bg-gray-100 p-5">
- <div class="max-w-3xl mx-auto text-center mt-16">
-    <h1 class="text-4xl font-bold text-gray-900 leading-tight mb-2 pb-4 relative">
+ <div class="max-w-3xl mx-auto text-center ">
+    <h1 class="text-4xl font-bold text-gray-900 leading-tight  relative">
         <span class="bg-clip-text text-transparent bg-gradient-to-r from-purple-500 to-pink-500">List Of License</span>
         <span class="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-purple-500 to-pink-500"></span>
     </h1>

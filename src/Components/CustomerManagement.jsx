@@ -714,7 +714,6 @@ const CutomerManagement = () => {
   const [statusFilter, setStatusFilter] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [showModal, setShowModal] = useState(false);
-  const usersPerPage = 5;
   const [currentPage, setCurrentPage] = useState(1);
   const [showAddLicenseModal, setShowAddLicenseModal] = useState(false);
   const [selectedCustomerId, setSelectedCustomerId] = useState(null);
@@ -722,6 +721,7 @@ const CutomerManagement = () => {
   const [selectedCustomer, setSelectedCustomer] = useState(null);
   const [licenseModalVisible, setLicenseModalVisible] = useState(false); // For toggling modal visibility
 const [currentCustomerLicenses, setCurrentCustomerLicenses] = useState([]); // For storing licenses of the selected customer
+const usersPerPage = 6;
 
   useEffect(() => {
     fetchCustomers();
@@ -860,7 +860,7 @@ fetchCustomers();
       if (response.data.code === "SUCCESS") {
         // If the response is successful, update the UI or state
         // alert("Customer status updated successfully!");    
-        showToast("Customer status updated successfully...!","success ")
+        showToast("Customer status updated successfully...!","success")
 
         // Here, you could also update the customer status in the local state/UI
       } else {
@@ -929,64 +929,11 @@ fetchCustomers();
 
   return (
     <>
-      <div class="max-w-3xl mx-auto text-center mt-2 mb-4">
-        <h1 class="text-4xl font-bold text-gray-900 leading-tight mb-2 pb-4 relative">
-          <span class="bg-clip-text text-transparent bg-gradient-to-r from-purple-900 to-pink-600">
-            Customer Management
-          </span>
-          <span class="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-purple-900 to-pink-300"></span>
-        </h1>
-        {/* <p class="text-lg text-gray-800 mb-8"></p> */}
-      </div>
-      <div className="bg-gray-100 p-5">
-        {/* <div className="flex justify-between mb-4">
-        <div className="flex space-x-1">
-          <select
-            value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
-            className="px-4 py-2 border border-gray-300 rounded-md"
-          >
-            <option value="">Filter by Status</option>
-            <option value="ACTIVE">Active</option>
-            <option value="INACTIVE">Inactive</option>
-            <option value="PENDING">PENDING</option>
-          </select>
+     
+      <div className="bg-gray-100 p-2">
+        
 
-          <input
-            type="text"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder="Search by name or email"
-            className="px-4 py-2 border border-gray-300 rounded-md"
-          />
-        </div>
-      </div> */}
 
-        <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
-          {/* Filter and Search Container */}
-          <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
-            {/* Status Filter Dropdown */}
-            <select
-              value={statusFilter}
-              onChange={(e) => setStatusFilter(e.target.value)}
-              className="px-4 py-2 border border-gray-300 rounded-md w-full sm:w-auto"
-            >
-              <option value="">Filter By Status</option>
-              {/* <option value="ACTIVE">Active</option>
-      <option value="RENEW">RENEW</option> */}
-              <option value="PENDING">Any Pending License</option>
-            </select>
-
-            {/* Search Input */}
-            <input
-              type="text"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              placeholder="Search by name or email"
-              className="px-4 py-2 border border-gray-300 rounded-md w-full sm:w-auto"
-            />
-          </div>
-        </div>
 
         {showModal && (
           <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-50 z-50">
@@ -1188,8 +1135,26 @@ fetchCustomers();
             </div>
           </div>
         )}
-
-        <div className="overflow-x-auto">
+ <div className="flex flex-wrap items-center justify-between gap-4 mb-2">
+          <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
+            <select
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}
+              className="px-4 py-2 border border-gray-300 rounded-md w-full sm:w-auto"
+            >
+              <option value="">Filter By Status</option>
+     
+              <option value="PENDING">Any Pending License</option>
+            </select>
+            <input
+              type="text"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              placeholder="Search by name or email"
+              className="px-4 py-2 border border-gray-300 rounded-md w-full sm:w-auto"
+            />
+          </div>
+        </div>
           <div className="flex justify-end mb-4">
             <button
               onClick={() => setShowModal(true)}
@@ -1198,7 +1163,9 @@ fetchCustomers();
               Add Customer +
             </button>
           </div>
+       
 
+          <div className="overflow-x-auto">
           <table className="min-w-full divide-y divide-gray-200 bg-white shadow-md rounded-lg">
             <thead className="bg-gray-200">
               <tr>
@@ -1317,7 +1284,7 @@ fetchCustomers();
               ))}
             </tbody>
           </table>
-        </div>
+          </div>
 
         {licenseModalVisible && (
           <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-50 z-50">

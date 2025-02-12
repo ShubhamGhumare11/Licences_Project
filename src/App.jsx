@@ -6,10 +6,17 @@ import {
   useLocation,
 } from "react-router-dom";
 import Navbar from "./Components/Navbar";
-import AdminSection from "./Pages/AdminSection";
+// import AdminSection from "./Pages/AdminSection";
+import CustomerManagement from "./Components/CustomerManagement";
+import LicenseManagement from "./Components/LicenseManagement";
+
 import UserSection from "./Pages/UserSection";
 import WhatsappChat from "./Components/User/WhatsappChat ";
+import CustomerLicenseListPopup from "./Components/User/CustomerLicenseListPopup";
+
 import LicenseManager from "./Components/LicenseManager";
+import LicenseDetail from "./Components/User/LicenseDetail";
+
 import InterestedUserApplyForm from "./Components/User/InterestedUserApplyForm";
 
 import Login from "./Components/Login";
@@ -61,10 +68,19 @@ function App() {
           />
 
           <Route
-            path="/adminsection"
+            path="/licensemanagement"
             element={
               <RoleProtectedRoute allowedRoles={["ADMIN"]}>
-              <AdminSection />
+              <LicenseManagement />
+               </RoleProtectedRoute>
+            }
+          />
+          
+          <Route
+            path="/customermanagement"
+            element={
+              <RoleProtectedRoute allowedRoles={["ADMIN"]}>
+              <CustomerManagement/>
                </RoleProtectedRoute>
             }
           />
@@ -73,6 +89,14 @@ function App() {
 
           {/* user routes */}
           <Route path="/" element={<UserSection />} />
+          <Route
+            path="/customerlicenselist"
+            element={<CustomerLicenseListPopup/>}
+          />
+          <Route
+            path="/licensedetail"
+            element={<LicenseDetail/>}
+          />
           <Route
             path="/interesteduserapplyform"
             element={<InterestedUserApplyForm />}

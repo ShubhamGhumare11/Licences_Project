@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import api from "../Utils/api1";
 import UpdateStatusPopup from "./UpdateStatusPopup";
-import { showToast } from "../Utils/toastUtils";
-import { FaRegTrashAlt  } from "react-icons/fa";
+import CustomerImgPreviewPopup from "./CustomerDocsPreviewPopup";
+
+import { showConfirm,showToast } from "../Utils/toastUtils";
+import { FaRegTrashAlt, FaRegEye } from "react-icons/fa"; // Import Eye Icon
 
 const LicenseManagement = () => {
   const [customers, setCustomers] = useState([]);
@@ -11,7 +13,10 @@ const LicenseManagement = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [selectedLicense, setSelectedLicense] = useState(null);
-
+  // Image Preview States
+  const [isImagePopupOpen, setIsImagePopupOpen] = useState(false);
+  const [selectedCustomerImages, setSelectedCustomerImages] = useState([]);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const usersPerPage = 5;
 
   useEffect(() => {
@@ -53,12 +58,20 @@ const LicenseManagement = () => {
 
   const deleteLicense = async (licenseOfCustomerId) => {
     try {
+
+      const confirmation =  await showConfirm("Are you sure to delete?");
+
+      if (confirmation) {
       const response = await api.delete(
         `/api/licenseOfCustomerController/deleteLicenseOfCustomer`,
         {
           params: { licenseOfCustomerId: licenseOfCustomerId },
         }
       );
+
+  
+
+    
 console.log(response.data.code)
       if (response.data.code=== "ALL OK") {
         showToast("License deleted successfully", "success");
@@ -66,6 +79,7 @@ console.log(response.data.code)
       } else {
         showToast("Failed to delete license", "error");
       }
+    }
     } catch (error) {
       console.error("Error deleting license:", error);
       alert("Error deleting license");
@@ -113,6 +127,20 @@ console.log(response.data.code)
       setSelectedLicense(null);
     }
   };
+
+
+  // Function to open the image preview popup
+  const openImagePopup = (images) => {
+    if (images.length > 0) {
+      setSelectedCustomerImages(images);
+      setCurrentImageIndex(0);
+      setIsImagePopupOpen(true);
+    } else {
+      showToast("No images available for this customer", "warning");
+    }
+  };
+
+
   const filteredCustomers = customers.filter((customer) =>
     customer.licenceDTOS?.some((lic) => 
       (statusFilter ? lic.status === statusFilter : true) &&
@@ -152,10 +180,7 @@ currentCustomers.forEach((customer) => {
     <div className="mx-auto text-center mt-2 mb-4">
 
 <div class="max-w-3xl mx-auto text-center mt-2 mb-4">
-    <h1 class="text-4xl font-bold text-gray-900 leading-tight mb-2 pb-4 relative">
-        <span class="bg-clip-text text-transparent bg-gradient-to-r from-purple-900 to-pink-600">License Management</span>
-        <span class="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-purple-900 to-pink-300"></span>
-    </h1>
+    
     {/* <p class="text-lg text-gray-800 mb-8"></p> */}
 </div>
       <div className="bg-gray-100 p-5">
@@ -252,6 +277,13 @@ currentCustomers.forEach((customer) => {
                     >
                       Change Status
                     </button>
+                     {/* Eye Icon for Image Preview */}
+                     <button
+                      onClick={() => openImagePopup(row.license?.images || [])}
+                      className="bg-green-500 p-2 rounded-md hover:bg-green-700"
+                    >
+                      <FaRegEye className="text-white text-xl" />
+                    </button>
                     <div 
     onClick={() => deleteLicense(row.license.licenseOfCustomerId)}
     className="bg-red-500 p-2 rounded-md cursor-pointer hover:bg-red-700"
@@ -286,6 +318,12 @@ currentCustomers.forEach((customer) => {
         </div>
       </div>
 
+
+
+ {/* Image Preview Popup */}
+ {isImagePopupOpen && (
+        <CustomerImgPreviewPopup images={selectedCustomerImages} onClose={() => setIsImagePopupOpen(false)} />
+      )}
       <UpdateStatusPopup
         isOpen={isPopupOpen}
         onClose={() => setIsPopupOpen(false)}
