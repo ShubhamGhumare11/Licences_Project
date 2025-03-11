@@ -6,6 +6,8 @@ import {
   useLocation,
 } from "react-router-dom";
 import Navbar from "./Components/Navbar";
+
+import Footer from "./Components/Footer";
 // import AdminSection from "./Pages/AdminSection";
 import CustomActiveShapePieChart from "./Components/Dashboard/CustomActiveShapePieChart";
 import CustomerManagement from "./Components/CustomerManagement";
@@ -121,7 +123,7 @@ function App() {
 
         <ToastContainer /> {/* ToastContainer should be here, or at the root of the app */}
 
-        {/* <Footer /> */}
+        <Footer />
       </Router>
     </AuthProvider>
   );

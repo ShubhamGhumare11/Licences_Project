@@ -1,6 +1,8 @@
 import React from "react";
 // import { motion } from "framer-motion";
 import LicenseGrid from "../Components/User/LicenseGrid";
+import Home from "../Components/User/Home";
+
 
 
 
@@ -17,7 +19,8 @@ const UserSection = () => {
         <ServicesCard />
       </motion.div> */}
       
-        <LicenseGrid />
+        {/* <LicenseGrid /> */}
+        <Home/>
 
 
      

@@ -1,6 +1,6 @@
 
   import React, { useState } from "react";
-// import herosection from "../Image/herosection.jpg";
+import contactus from "../../Images/contactus.jpg";
 // import android from "../Image/android.png";
 // import ios from "../Image/ios.jpg";
 import { IoCallOutline } from "react-icons/io5";
@@ -40,7 +40,7 @@ const Contact = () => {
       {/* <Chatbot /> */}
       <div className="relative w-full h-[420px] flex items-center">
         <img
-          // src={herosection}
+          src={contactus}
           className="absolute inset-0 w-full h-full object-cover"
           alt="Background"
           loading="lazy"
@@ -48,7 +48,7 @@ const Contact = () => {
         <div className="relative z-10 flex flex-col items-start justify-start md:justify-center h-full text-left text-white px-8 md:px-16 lg:px-24 pt-8 md:pb-20 font-serif">
           <h1 className="text-2xl md:text-2xl lg:text-4xl font-bold mb-4 md:mb-6 leading-snug">
             <span className="block text-cyan-500 ">
-              Get In Touch
+              {/* Get In Touch */}
             </span>
             {/* <span className="block mt-2 text-white">Explore Our  </span> */}
           </h1>
