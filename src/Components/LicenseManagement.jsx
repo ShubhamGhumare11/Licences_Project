@@ -179,11 +179,13 @@ currentCustomers.forEach((customer) => {
   return (
     <div className="mx-auto text-center mt-2 mb-4">
 
-<div class="max-w-3xl mx-auto text-center mt-2 mb-4">
-    
-    {/* <p class="text-lg text-gray-800 mb-8"></p> */}
+
+      <div className="bg-gray-100 ">
+      <div className="flex items-center justify-center h-20">
+  <h1 className="text-3xl font-bold underline decoration-2 decoration-cyan-400 font-serif">
+    License Management
+  </h1>
 </div>
-      <div className="bg-gray-100 p-5">
         <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
           <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
             <select
@@ -259,36 +261,43 @@ currentCustomers.forEach((customer) => {
   <span
     className={`${
       row.license?.status === 'ACTIVE'
-        ? 'text-green-100 bg-green-500 border border-green-500'
+        ? 'px-4 py-1 text-sm text-green-600 rounded-full bg-green-100'
         : row.license?.status === 'RENEW'
-        ? 'text-pink-100 bg-pink-500 border border-pink-500'
+        ? 'px-4 py-1 text-sm text-pink-600 rounded-full bg-pink-100'
         : row.license?.status === 'PENDING'
-        ? 'text-yellow-100 bg-yellow-500 border border-yellow-500'
+        ? 'px-4 py-1 text-sm text-yellow-600 rounded-full bg-yellow-100'
         : 'bg-gray-100 text-gray-500 border border-gray-500'
     } px-2 py-1 rounded-md`}
   >
+
+{/* <span class="px-4 py-1 text-sm text-green-500 rounded-full bg-green-50">completed</span> */}
+
     {row.license ? row.license.status : "N/A"}
   </span>
 </td>
 
 <td className="px-3 py-4 flex items-center gap-3">                    <button
                       onClick={() => handleStatusChange(row.license)}
-                      className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-yellow-600"
+                      className="bg-cyan-500 text-white px-8 py-2 rounded-md hover:bg-cyan-700"
                     >
                       Change Status
                     </button>
                      {/* Eye Icon for Image Preview */}
                      <button
                       onClick={() => openImagePopup(row.license?.images || [])}
-                      className="bg-green-500 p-2 rounded-md hover:bg-green-700"
+                      className="px-4 py-2 text-white bg-cyan-500 hover:bg-cyan-700 rounded-md "
+
                     >
-                      <FaRegEye className="text-white text-xl" />
+                      {/* <FaRegEye className=" text-2xl text-grey-300" /> */}
+                      View
                     </button>
                     <div 
     onClick={() => deleteLicense(row.license.licenseOfCustomerId)}
-    className="bg-red-500 p-2 rounded-md cursor-pointer hover:bg-red-700"
+    className="px-4 py-2 rounded-full bg-gray-100"
+
+    
   >
-    <FaRegTrashAlt className="text-white text-xl" />
+    <FaRegTrashAlt className=" text-xl text-red-500" />
   </div>
                   </td>
                 </tr>

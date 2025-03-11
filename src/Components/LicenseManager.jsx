@@ -3,6 +3,7 @@ import axios from "axios"; // Importing axios for API calls
 import LicenceAdd from "./LicenceAdd"; // Import the License Add Modal Component
 import api from "../Utils/api1";
 import { showConfirm } from "../Utils/toastUtils";
+import {   FaRegTrashAlt } from "react-icons/fa";
 
 const LicenseManager = () => {
   const [licenses, setLicenses] = useState([]); // Initialize licenses as an empty array
@@ -108,20 +109,24 @@ const deleteLicense = async (licenseListID) => {
 
   return (
     <div className="bg-gray-100 p-5">
- <div class="max-w-3xl mx-auto text-center ">
+ {/* <div class="max-w-3xl mx-auto text-center ">
     <h1 class="text-4xl font-bold text-gray-900 leading-tight  relative">
-        <span class="bg-clip-text text-transparent bg-gradient-to-r from-purple-500 to-pink-500">List Of License</span>
-        <span class="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-purple-500 to-pink-500"></span>
+        <span class="bg-clip-text text-transparent text-gray-950">List Of License</span>
+        <span class="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-gray-700 to-gray-900"></span>
     </h1>
     <p class="text-lg text-gray-800 mb-8"></p>
+</div> */}
+   <div className="flex items-center justify-center h-20">
+  <h1 className="text-3xl font-bold underline decoration-2 decoration-cyan-400 font-serif">
+    License List 
+  </h1>
 </div>
-
 
       {/* Add License Button */}
       <div className="flex justify-end mb-6">
         <button
           onClick={handleOpenPopup}
-          className="bg-blue-500 text-white px-4 py-2 rounded bg-pink-600 hover:bg-green-700 ml-auto lg:mx-10 md:mx-5  sm:mx-5 "
+          className="bg-purple-600 text-white px-4 py-2 rounded  hover:bg-purple-800 ml-auto lg:mx-10 md:mx-5  sm:mx-5 "
         >
           Add License +
         </button>
@@ -166,9 +171,8 @@ const deleteLicense = async (licenseListID) => {
                   </a> */}
                   <button
                     onClick={() => deleteLicense(license.licenseID)} // Call delete function on click
-                    className="inline-block bg-red-100 text-red-600 hover:bg-red-200 hover:text-red-900 px-3 py-1 rounded-md"
                   >
-                    Delete
+    <FaRegTrashAlt className=" text-xl text-red-500" />
                   </button>
                 </td>
               </tr>

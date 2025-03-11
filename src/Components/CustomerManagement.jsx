@@ -694,7 +694,7 @@ import React, { useState, useEffect } from "react";
 import LicenseAddToCustomer from "./LicenseAddToCustomer";
 import EditCustomerPopup from "./EditCustomerPopup";
 import { showConfirm,showToast } from "../Utils/toastUtils";
-import { FaRegTrashAlt  } from 'react-icons/fa'; // Importing the trash icon from react-icons
+import {  FaRegEdit, FaRegTrashAlt } from "react-icons/fa";
 
 import api from "../Utils/api1";
 const CutomerManagement = () => {
@@ -930,11 +930,12 @@ fetchCustomers();
   return (
     <>
      
-      <div className="bg-gray-100 p-2">
-        
-
-
-
+      <div className="bg-slate-100 p-2">
+      <div className="flex items-center justify-center h-20">
+  <h1 className="text-3xl font-bold underline decoration-2 decoration-cyan-400 font-serif">
+    Customer Management
+  </h1>
+</div>
         {showModal && (
           <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-50 z-50">
             <div className="bg-white p-6 rounded-lg shadow-lg w-96">
@@ -1154,15 +1155,16 @@ fetchCustomers();
               className="px-4 py-2 border border-gray-300 rounded-md w-full sm:w-auto"
             />
           </div>
-        </div>
           <div className="flex justify-end mb-4">
             <button
               onClick={() => setShowModal(true)}
-              className="bg-blue-500 text-white px-4 py-2 rounded bg-green-700 hover:bg-green-700 ml-auto"
+              className="bg-purple-600 text-white px-4 py-2 rounded  hover:bg-purple-800 ml-auto"
             >
               Add Customer +
             </button>
           </div>
+        </div>
+       
        
 
           <div className="overflow-x-auto">
@@ -1175,7 +1177,12 @@ fetchCustomers();
                 >
                   Fullname
                 </th>
-
+                <th
+                  scope="col"
+                  className="px-3 py-3 text-left text-xs font-medium text-gray-900 uppercase tracking-wider"
+                >
+                  Enable/Disable
+                </th>
                 <th
                   scope="col"
                   className="px-3 py-3 text-left text-xs font-medium text-gray-900 uppercase tracking-wider"
@@ -1217,7 +1224,27 @@ fetchCustomers();
                     >
                       {customer.firstName} {customer.lastName}
                     </span>
+                    
                   </td>
+
+
+
+                  <td className="px-3 py-4 whitespace-nowrap">
+                  <label className="inline-flex items-center me-5 cursor-pointer">
+  {/* <span className="text-xs font-medium text-gray-900 dark:text-gray-300 mb-1">
+    {customer.present === "AVAILABLE" ? "Available" : "Unavailable"}
+  </span> */}
+    <input
+      type="checkbox"
+      className="sr-only peer"
+      checked={customer.present === "AVAILABLE"}
+      onChange={() => handleCustomerStatusChange(customer)}
+    />
+    <div className="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600 dark:peer-checked:bg-green-600"></div>
+  </label>                  </td>
+
+
+
                   <td className="px-3 py-4 whitespace-nowrap">
                     {customer.mobileNumber}
                   </td>
@@ -1230,14 +1257,14 @@ fetchCustomers();
                           openLicenseModal(customer.licenseOfCustomerDTOS)
                         }
                         className="inline-flex items-center justify-center w-8 h-8 
-    rounded-full bg-green-500 text-white text-sm font-bold"
+    rounded-full  text-black text-sm font-bold"
                       >
                         {customer.licenseOfCustomerDTOS.length}
                       </span>
                     ) : (
                       <span
                         className="inline-flex items-center justify-center w-8 h-8 
-    rounded-full bg-red-600 text-white text-sm font-bold"
+    rounded-full  text-black text-sm font-bold"
                       >
                         0
                       </span>
@@ -1250,34 +1277,51 @@ fetchCustomers();
                   <td className="px-3 py-4 whitespace-nowrap text-sm font-medium">
                     <button
                       onClick={() => handleEditClick(customer)}
-                      className="bg-indigo-100 text-indigo-600 hover:bg-indigo-200 px-3 mx-3 py-1 rounded-md"
+                      className="px-4 py-2 rounded-full bg-gray-100"
                     >
-                      Edit
-                    </button>
+    <FaRegEdit className=" text-2xl text-grey-300"/>
+    </button>
                     <button
                       onClick={() =>
                         handleDeleteCustomerById(customer.customerId)
                       }
-                      className="bg-red-100 text-red-600 hover:bg-red-200 px-3 mx-3 py-1 rounded-md"
+                      className="px-4 py-2 mx-2 rounded-full bg-gray-100"
                     >
-                      Delete
+    <FaRegTrashAlt className=" text-xl text-red-500" />
                     </button>
                     {/* Add the button to add a license */}
                     <button
                       onClick={() => handleAddLicenseClick(customer.customerId)} // Pass customer ID dynamically
-                      className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+                      className="bg-cyan-500 text-white px-4 py-2 rounded-md hover:bg-cyan-800"
                     >
                       Add License to Customer
                     </button>
 
-                    <button
+                    {/* <button
   onClick={() => handleCustomerStatusChange(customer)} // Pass customer ID dynamically
   className={`px-4 mx-2 py-2 rounded-md text-white  ${
     customer.present === "AVAILABLE" ? "bg-green-500" : "bg-red-500"
   }`}
 >
   {customer.present}
-</button>
+</button> */}
+  
+
+
+{/* 
+<label className="inline-flex items-center me-5 cursor-pointer">
+  <input
+    type="checkbox"
+    className="sr-only peer"
+    checked={customer.present === "AVAILABLE"}
+    onChange={() => handleCustomerStatusChange(customer)}
+  />
+  <div className="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600 dark:peer-checked:bg-green-600"></div>
+  <span className="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">
+    {customer.present === "AVAILABLE" ? "Available" : "Unavailable"}
+  </span>
+</label> */}
+
 
                   </td>
                 </tr>

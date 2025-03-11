@@ -41,13 +41,14 @@ const Navbar = () => {
           {/* Logo */}
           <div className="flex-shrink-0">
         
-            <a href="/">
+            {/* <a href="/">
             <img
               className="h-8 w-auto"
               src="https://tailwindui.com/plus/img/logos/mark.svg?color=indigo&shade=500"
               alt="Your Company"
             />
-            </a>
+            </a> */}
+            <h6 className="text-4xl text-white font-serif">GTasterix</h6>
           </div>
 
           {/* Mobile Profile Icon */}
@@ -134,44 +135,53 @@ const Navbar = () => {
 
           {/* Desktop Navigation */}
 
-           {(Array.isArray(userRoles) && userRoles.includes("ADMIN")) && (
+          {(Array.isArray(userRoles) && userRoles.includes("ADMIN")) && (
   <div className="hidden sm:flex sm:items-center sm:space-x-4">
-      <a
-    href="/"
-    className="rounded-md  px-3 py-2 text-sm font-medium text-white"
-  >
-    Home
-  </a>
-  <a
-    href="#"
-    className="rounded-md px-3 py-2 text-sm font-medium text-white"
-  >
-    Dashboard
-  </a>
-  <a
-              href="customermanagement"
-              className="block rounded-md  px-3 py-2 text-base font-medium text-white"
-            >
-              CustomerManagement
-            </a>
-            <a
-              href="licensemanagement"
-              className="block rounded-md  px-3 py-2 text-base font-medium text-white"
-            >
-              LiceneseManagement
-            </a>
-  <a
-    href="licensemanager"
-    className="rounded-md px-3 py-2 text-sm font-medium text-white hover:bg-gray-700 hover:text-white"
-  >
-    Add License 
-  </a>
- 
+    <a href="/" className="rounded-md px-3 py-2 text-sm font-medium text-white">
+      Home
+    </a>
 
-  {/* Avatar Icon */}
-  
-</div>
-          )}
+    {/* Services Dropdown */}
+    <div className="relative group">
+      <button className="rounded-md px-3 py-2 text-sm font-medium text-white focus:outline-none">
+        Services ▼
+      </button>
+      <div className="absolute left-0 mt-2 w-48 bg-gray-800 rounded-md shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+        <a
+          href="dashboard"
+          className="block px-4 py-2 text-sm text-white hover:bg-gray-700"
+        >
+          Dashboard
+        </a>
+        <a
+          href="customermanagement"
+          className="block px-4 py-2 text-sm text-white hover:bg-gray-700"
+        >
+          Customer Management
+        </a>
+        <a
+          href="licensemanagement"
+          className="block px-4 py-2 text-sm text-white hover:bg-gray-700"
+        >
+          License Management
+        </a>
+        <a
+      href="licensemanager"
+      className="block px-4 py-2 text-sm text-white hover:bg-gray-700"
+      >
+      Add License
+    </a>
+      </div>
+    </div>
+    <a href="/about" className="rounded-md px-3 py-2 text-sm font-medium text-white">
+      About
+    </a> <a href="/contact" className="rounded-md px-3 py-2 text-sm font-medium text-white">
+      Contact
+    </a>
+   
+  </div>
+)}
+
         <div className="relative"   ref={dropdownRef}
             onMouseEnter={() => setIsDropdownOpen(true)}
             // onMouseLeave={() => setIsDropdownOpen(false)}
@@ -273,18 +283,18 @@ const Navbar = () => {
             >
               Add License 
             </a>
-            {/* <a
-              href="#"
+            <a
+              href="about"
               className="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
             >
-              Projects
-            </a> */}
-            {/* <a
-              href="#"
+              About
+            </a> 
+             <a
+              href="contact"
               className="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
             >
-              Calendar
-            </a> */}
+              Contact
+            </a>
           </div>
     
         </div>

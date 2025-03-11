@@ -1,9 +1,15 @@
 import React from "react";
+import { useLocation } from "react-router-dom";
 
-const WhatsappChat = ({ message }) => {
+const WhatsappChat = () => {
+  const location = useLocation();
+  console.log("Location State:", location.state); // Debugging
+  const message = location.state?.message; // Retrieve the message from state
+
   const whatsappPhoneNumber = "7447376717"; 
   const encodedMessage = encodeURIComponent(message);
   const whatsappLink = `https://wa.me/${whatsappPhoneNumber}?text=${encodedMessage}`;
+  console.log("WhatsApp message:", message); 
 
   console.log("WhatsApp Link:", whatsappLink); 
 

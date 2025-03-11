@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { FaTimes, FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { FaDownload } from "react-icons/fa"; // Import Download Icon
 
 const CustomerImgPreviewPopup = ({ images, onClose }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -13,17 +14,32 @@ console.log(images)
   const handlePrev = () => {
     setCurrentIndex((prevIndex) => (prevIndex - 1 + images.length) % images.length);
   };
-
+  const downloadImage = () => {
+    const base64Image = images; // Get current image
+    const link = document.createElement("a");
+    link.href = `data:image/jpeg;base64,${base64Image}`;
+    link.download = `Document_${currentIndex + 1}.jpg`; // Image name
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
   return (
     <div 
       className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-80 backdrop-blur-md z-50"
       onClick={onClose} // Close modal when clicking outside
-    >
+    >  
       <div 
         className="relative bg-white bg-opacity-10 backdrop-blur-xl p-6 rounded-3xl shadow-lg w-full max-w-4xl flex flex-col items-center border border-gray-200 transition-all duration-300"
         onClick={(e) => e.stopPropagation()} // ✅ Prevents closing when clicking inside
       >
-      
+        {/* Download Button (Top-Right) */}
+        <button 
+          onClick={downloadImage} 
+          className="absolute bottom-5 right-5 text-white bg-blue-500 p-2 rounded-full z-50"
+        >
+          <FaDownload size={20}           onClick={downloadImage} 
+          /> 
+        </button>
 
         {/* Image Viewer */}
         <div className="relative flex items-center justify-center w-full">
@@ -51,6 +67,8 @@ console.log(images)
             </button>
           )}
         </div>
+       
+    
 
         {/* Image Counter */}
         <div className="mt-3 text-white text-sm font-semibold tracking-wide">

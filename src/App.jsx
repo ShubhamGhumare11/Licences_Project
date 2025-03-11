@@ -7,6 +7,7 @@ import {
 } from "react-router-dom";
 import Navbar from "./Components/Navbar";
 // import AdminSection from "./Pages/AdminSection";
+import CustomActiveShapePieChart from "./Components/Dashboard/CustomActiveShapePieChart";
 import CustomerManagement from "./Components/CustomerManagement";
 import LicenseManagement from "./Components/LicenseManagement";
 
@@ -18,6 +19,8 @@ import LicenseManager from "./Components/LicenseManager";
 import LicenseDetail from "./Components/User/LicenseDetail";
 
 import InterestedUserApplyForm from "./Components/User/InterestedUserApplyForm";
+import About from "./Components/User/About";
+import Contact from "./Components/User/Contact";
 
 import Login from "./Components/Login";
 import UserRegisterPopup from "./Components/UserRegisterPopup";
@@ -85,7 +88,14 @@ function App() {
             }
           />
 
-
+<Route
+            path="/dashboard"
+            element={
+              <RoleProtectedRoute allowedRoles={["ADMIN"]}>
+              <CustomActiveShapePieChart/>
+               </RoleProtectedRoute>
+            }
+          />
 
           {/* user routes */}
           <Route path="/" element={<UserSection />} />
@@ -102,6 +112,11 @@ function App() {
             element={<InterestedUserApplyForm />}
           />
           <Route path="/whatsapp-chat" element={<WhatsappChat />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact/>} />
+
+
+
         </Routes>
 
         <ToastContainer /> {/* ToastContainer should be here, or at the root of the app */}

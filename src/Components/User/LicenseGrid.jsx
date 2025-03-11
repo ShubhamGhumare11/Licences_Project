@@ -41,7 +41,9 @@ const LicenseGrid = () => {
 
   // Loading state
   if (isLoading) {
-    return <div className="text-center py-6">Loading...</div>;
+    return   <div className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-50">
+    <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500"></div>
+  </div>;
   }
 
   // Error state
@@ -50,7 +52,7 @@ const LicenseGrid = () => {
   }
 
   // Navigate to InterestedUserApplyForm and pass the selected license
-  const handleApply = (licenseName) => {
+  const   handleApply = (licenseName,validTill,images,description) => {
     console.log("Selected License: ", licenseName);
     // navigate("/interesteduserapplyform", { state: { interestedToApply: licenseName } });
 
@@ -58,7 +60,7 @@ const LicenseGrid = () => {
 
     if (user) {
       // If user is logged in, navigate to InterestedUserApplyForm
-      navigate("/licensedetail", { state: { interestedToApply: licenseName } });
+      navigate("/licensedetail", { state: { licenseName:licenseName,validTill:validTill,images:images,description:description } });
     } else {
       // If user is not logged in, navigate to UserRegistration
       setSelectedLicense(licenseName);
@@ -67,18 +69,13 @@ const LicenseGrid = () => {
 
   // Displaying available licenses
   return (
-    <div className="p-6">
+    <div className="p-6 bg-slate-100">
       <div className="max-w-3xl mx-auto text-center mt-16">
-        {/* <h1 className="text-4xl font-bold text-gray-900 leading-tight mb-2 pb-4 relative">
-          <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-500 to-pink-500">
-            Apply For License
-          </span>
-          <span className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-purple-500 to-pink-500"></span>
-        </h1> */}
+    
         <p className="text-lg text-gray-800 mb-8">Choose a license below to apply.</p>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      {/* <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {licenses.length > 0 ? (
           licenses.map((license, index) => (
             <div
@@ -99,7 +96,66 @@ const LicenseGrid = () => {
         ) : (
           <div className="text-center py-6 text-gray-500">No licenses available.</div>
         )}
-      </div>
+      </div> */}
+
+
+
+
+
+   {/* Services Grid */}
+
+   {licenses.length > 0 ? (
+   <div className="px-4  md:px-8 lg:px-16 py-8 font-serif">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          {licenses.map((item, index) => (
+              <div key={index} className="w-full max-w-sm bg-white border border-cyan-700 rounded-lg shadow-lg">
+                <img
+                  className="p-4 rounded-t-lg object-cover w-full h-52 md:h-56"
+                  src={`data:image/jpeg;base64,${item.images}`}
+                  alt="service image"
+                />
+
+                <div className="px-5 pb-5">
+                  <a href="#">
+                    <h5 className="text-xl font-semibold tracking-tight text-gray-900 truncate">
+                      {item.licenseName}
+                    </h5>
+                  </a>
+                  <h3 className="text-black mb-1 italic line-clamp-2 text-sm ">
+                    {item.subTitle}
+                  </h3>
+
+               
+
+                  {/* Pricing Section */}
+                  <div className="flex items-center justify-between">
+                    
+                    <span className="text-xs text-slate-900">(Validity: {item.validTill} year)</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+
+                  <span className="text-sm  text-gray-900 tracking-tight  line-clamp-2">
+                      {item.description}
+                    </span>
+                    </div>
+
+                  {/* Button Section */}
+                  <button
+                onClick={() => handleApply(item.licenseName,item.validTill,item.images,item.description)}
+                className=" bg-cyan-600 hover:bg-cyan-700flex items-center justify-center w-full rounded-lg  focus:ring-4 focus:outline-none  font-medium text-sm px-5 py-2.5 text-center text-white mt-5"
+              >
+                Apply
+              </button>
+
+
+                </div>
+              </div>
+            
+          ))}
+        </div>
+      </div>):(
+          <div className="text-center py-6 text-gray-500">No licenses available.</div>
+        )}
 
          {/* User Registration Popup */}
          {showRegisterPopup && (

@@ -305,7 +305,7 @@ const LicenceAdd = ({ isOpen, onClose, onLicenseAdded }) => {
   const [licenseName, setLicenseName] = useState("");
   const [validTill, setValidTill] = useState("");
   const [description, setDescription] = useState("");
-  const [images, setImages] = useState({ aadhar: null, pan: null, voter: null });
+  const [images, setImages] = useState({ IMAGE: null });
   const [isLoading, setIsLoading] = useState(false);
   const [responseMessage, setResponseMessage] = useState("");
   const [previewImage, setPreviewImage] = useState(null);
@@ -353,7 +353,7 @@ const LicenceAdd = ({ isOpen, onClose, onLicenseAdded }) => {
       setLicenseName("");
       setValidTill("");
       setDescription("");
-      setImages({ aadhar: null, pan: null, voter: null });
+      setImages({ IMAGE: null});
     } catch (error) {
       setResponseMessage(error.response?.data?.message || "Failed to save license. Please try again.");
     } finally {
@@ -371,7 +371,11 @@ const LicenceAdd = ({ isOpen, onClose, onLicenseAdded }) => {
           <button className="text-gray-500 hover:text-gray-700" onClick={onClose}>✕</button>
         </div>
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
+         
+        <div className="flex gap-4">
+
+<div className="flex-1">
+        <div>
             <label className="block text-sm font-medium text-gray-700">License Name</label>
             <input
               type="text"
@@ -398,23 +402,12 @@ const LicenceAdd = ({ isOpen, onClose, onLicenseAdded }) => {
               <option value="999">Lifetime</option>
             </select>
           </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Description</label>
-            <textarea
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              placeholder="Enter license description"
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
-              required
-            ></textarea>
           </div>
 
-          <div className="flex gap-4">
-            {["aadhar", "pan", "voter"].map((doc) => (
+            {["IMAGE"].map((doc) => (
               <div key={doc} className="mb-4">
                 <label className="block text-sm font-medium text-gray-700 capitalize">
-                  {doc.replace(/\b\w/g, (c) => c.toUpperCase())} Card
+                  {doc.replace(/\b\w/g, (c) => c.toUpperCase())} Upload
                 </label>
                 <div className="relative w-32 h-32 border-2 border-gray-300 rounded-lg flex items-center justify-center">
                   {images[doc] ? (
@@ -444,6 +437,23 @@ const LicenceAdd = ({ isOpen, onClose, onLicenseAdded }) => {
               </div>
             ))}
           </div>
+         
+         
+
+        
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Description</label>
+            <textarea
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              placeholder="Enter license description"
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
+              required
+            ></textarea>
+          </div>
+
+      
 
           {responseMessage && <p className={`text-sm ${responseMessage.includes("Failed") ? "text-red-500" : "text-green-500"}`}>{responseMessage}</p>}
           <div className="flex justify-end space-x-3">
