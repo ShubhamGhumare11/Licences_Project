@@ -288,7 +288,7 @@ const About = () => {
   return (
     <div className="flex flex-col min-h-screen bg-white">
 
-      <div className="relative w-full h-[420px] flex items-center">
+      <div className="relative w-full h-[420px] flex items-center ">
         <img
           src={herosection}
           className="absolute inset-0 w-full h-full object-cover"
@@ -301,15 +301,12 @@ const About = () => {
               Get To Know Us
             </span>
            </h1>
-          {/* <div className="mt-1 mr-1">
-            <Link to="/services" className="px-8 py-4 border text-sm md:text-base font-semibold rounded-full hover:bg-amber-400 hover:text-black transition duration-300">
-              Explore Services &rarr;
-            </Link>
-          </div> */}
         </div>
       </div>
+
+
+  {/* Our Mission */}
       <div className="flex flex-col md:flex-row items-center mt-4 md:mt-8 px-4 md:px-8 lg:px-12">
-  {/* Text Section */}
   <div className="flex-1 p-4 sm:p-6 md:p-10 lg:p-12 mb-10 font-serif">
     <h2 className="text-md md:text-5xl lg:text-5xl font-bold text-cyan-600">
       Our Mission

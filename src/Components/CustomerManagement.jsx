@@ -929,13 +929,12 @@ fetchCustomers();
 
   return (
     <>
-     
       <div className="bg-slate-100 p-2">
-      <div className="flex items-center justify-center h-20">
-  <h1 className="text-3xl font-bold underline decoration-2 decoration-cyan-400 font-serif">
-    Customer Management
-  </h1>
-</div>
+        <div className="flex items-center justify-center h-20">
+          <h1 className="text-3xl font-bold underline decoration-2 decoration-cyan-400 font-serif">
+            Customer Management
+          </h1>
+        </div>
         {showModal && (
           <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-50 z-50">
             <div className="bg-white p-6 rounded-lg shadow-lg w-96">
@@ -946,7 +945,7 @@ fetchCustomers();
                 <div className="flex flex-col md:flex-row gap-4">
                   <div className="mb-4">
                     <label className="block text-sm font-medium text-gray-700">
-                      Firstname
+                   Hotel Name
                     </label>
                     <input
                       type="text"
@@ -960,7 +959,7 @@ fetchCustomers();
                   </div>
                   <div className="mb-4">
                     <label className="block text-sm font-medium text-gray-700">
-                      Lastname
+                      Fullname
                     </label>
                     <input
                       type="text"
@@ -1136,7 +1135,7 @@ fetchCustomers();
             </div>
           </div>
         )}
- <div className="flex flex-wrap items-center justify-between gap-4 mb-2">
+        <div className="flex flex-wrap items-center justify-between gap-4 mb-2">
           <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
             <select
               value={statusFilter}
@@ -1144,7 +1143,7 @@ fetchCustomers();
               className="px-4 py-2 border border-gray-300 rounded-md w-full sm:w-auto"
             >
               <option value="">Filter By Status</option>
-     
+
               <option value="PENDING">Any Pending License</option>
             </select>
             <input
@@ -1164,10 +1163,8 @@ fetchCustomers();
             </button>
           </div>
         </div>
-       
-       
 
-          <div className="overflow-x-auto">
+        <div className="overflow-x-auto">
           <table className="min-w-full divide-y divide-gray-200 bg-white shadow-md rounded-lg">
             <thead className="bg-gray-200">
               <tr>
@@ -1175,14 +1172,26 @@ fetchCustomers();
                   scope="col"
                   className="px-3 py-3 text-left text-xs font-medium text-gray-900 uppercase tracking-wider"
                 >
-                  Fullname
+                  Sr.No
                 </th>
                 <th
                   scope="col"
                   className="px-3 py-3 text-left text-xs font-medium text-gray-900 uppercase tracking-wider"
                 >
-                  Enable/Disable
+                  Hotel Name
                 </th>
+                <th
+                  scope="col"
+                  className="px-3 py-3 text-left text-xs font-medium text-gray-900 uppercase tracking-wider"
+                >
+                  Fullname
+                </th>
+                {/* <th
+                  scope="col"
+                  className="px-3 py-3 text-left text-xs font-medium text-gray-900 uppercase tracking-wider"
+                >
+                  Enable/Disable
+                </th> */}
                 <th
                   scope="col"
                   className="px-3 py-3 text-left text-xs font-medium text-gray-900 uppercase tracking-wider"
@@ -1210,8 +1219,13 @@ fetchCustomers();
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {currentCustomers.map((customer) => (
+              {currentCustomers.map((customer, index) => (
                 <tr key={customer.customerId}>
+                  <td className="px-3 py-4 whitespace-nowrap">
+                    {index + 1} {/* Serial number */}
+                  </td>
+                  <td className="px-3 py-4">{customer.firstName} </td>
+
                   <td className="px-3 py-4 whitespace-nowrap">
                     <span
                       className={`${
@@ -1222,28 +1236,21 @@ fetchCustomers();
                           : "bg-gray-100 text-gray-500 border border-gray-500"
                       } px-2 py-1 rounded-md`}
                     >
-                      {customer.firstName} {customer.lastName}
+                      {customer.lastName}
                     </span>
-                    
                   </td>
 
-
-
-                  <td className="px-3 py-4 whitespace-nowrap">
-                  <label className="inline-flex items-center me-5 cursor-pointer">
-  {/* <span className="text-xs font-medium text-gray-900 dark:text-gray-300 mb-1">
-    {customer.present === "AVAILABLE" ? "Available" : "Unavailable"}
-  </span> */}
-    <input
-      type="checkbox"
-      className="sr-only peer"
-      checked={customer.present === "AVAILABLE"}
-      onChange={() => handleCustomerStatusChange(customer)}
-    />
-    <div className="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600 dark:peer-checked:bg-green-600"></div>
-  </label>                  </td>
-
-
+                  {/* <td className="px-3 py-4 whitespace-nowrap">
+                    <label className="inline-flex items-center me-5 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        className="sr-only peer"
+                        checked={customer.present === "AVAILABLE"}
+                        onChange={() => handleCustomerStatusChange(customer)}
+                      />
+                      <div className="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600 dark:peer-checked:bg-green-600"></div>
+                    </label>{" "}
+                  </td> */}
 
                   <td className="px-3 py-4 whitespace-nowrap">
                     {customer.mobileNumber}
@@ -1279,15 +1286,15 @@ fetchCustomers();
                       onClick={() => handleEditClick(customer)}
                       className="px-4 py-2 rounded-full bg-gray-100"
                     >
-    <FaRegEdit className=" text-2xl text-grey-300"/>
-    </button>
+                      <FaRegEdit className=" text-2xl text-grey-300" />
+                    </button>
                     <button
                       onClick={() =>
                         handleDeleteCustomerById(customer.customerId)
                       }
                       className="px-4 py-2 mx-2 rounded-full bg-gray-100"
                     >
-    <FaRegTrashAlt className=" text-xl text-red-500" />
+                      <FaRegTrashAlt className=" text-xl text-red-500" />
                     </button>
                     {/* Add the button to add a license */}
                     <button
@@ -1305,10 +1312,8 @@ fetchCustomers();
 >
   {customer.present}
 </button> */}
-  
 
-
-{/* 
+                    {/* 
 <label className="inline-flex items-center me-5 cursor-pointer">
   <input
     type="checkbox"
@@ -1321,14 +1326,12 @@ fetchCustomers();
     {customer.present === "AVAILABLE" ? "Available" : "Unavailable"}
   </span>
 </label> */}
-
-
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
-          </div>
+        </div>
 
         {licenseModalVisible && (
           <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-50 z-50">
@@ -1341,12 +1344,14 @@ fetchCustomers();
                       key={license.licenseOfCustomerId || index}
                       className="border p-2 rounded-md relative"
                     >
-                   <div
-                  onClick={() => handleDeleteLicense(license.licenseOfCustomerId)}
-                  className="absolute top-2 right-2 text-red-500 cursor-pointer hover:text-red-700"
-                >
-                  <FaRegTrashAlt className="text-xl" />
-                </div>
+                      <div
+                        onClick={() =>
+                          handleDeleteLicense(license.licenseOfCustomerId)
+                        }
+                        className="absolute top-2 right-2 text-red-500 cursor-pointer hover:text-red-700"
+                      >
+                        <FaRegTrashAlt className="text-xl" />
+                      </div>
                       <p>
                         <strong>License Name:</strong> {license.licenseName}
                       </p>

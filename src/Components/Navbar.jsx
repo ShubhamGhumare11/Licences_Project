@@ -135,18 +135,19 @@ const Navbar = () => {
 
           {/* Desktop Navigation */}
 
-          {(Array.isArray(userRoles) && userRoles.includes("ADMIN")) && (
-  <div className="hidden sm:flex sm:items-center sm:space-x-4">
+          {(Array.isArray(userRoles) && (userRoles.includes("ADMIN") || userRoles.includes("USER"))) && (
+              <div className="hidden sm:flex sm:items-center sm:space-x-4">
     <a href="/" className="rounded-md px-3 py-2 text-sm font-medium text-white">
       Home
     </a>
 
     {/* Services Dropdown */}
+    {(Array.isArray(userRoles) && userRoles.includes("ADMIN") ) && (
     <div className="relative group">
       <button className="rounded-md px-3 py-2 text-sm font-medium text-white focus:outline-none">
         Services ▼
       </button>
-      <div className="absolute left-0 mt-2 w-48 bg-gray-800 rounded-md shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+      <div className="absolute left-0 mt-2 w-48 bg-gray-800 rounded-md shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-50">
         <a
           href="dashboard"
           className="block px-4 py-2 text-sm text-white hover:bg-gray-700"
@@ -172,7 +173,7 @@ const Navbar = () => {
       Add License
     </a>
       </div>
-    </div>
+    </div>)}
     <a href="/about" className="rounded-md px-3 py-2 text-sm font-medium text-white">
       About
     </a> <a href="/contact" className="rounded-md px-3 py-2 text-sm font-medium text-white">
@@ -200,13 +201,13 @@ const Navbar = () => {
     </button>
     {isDropdownOpen && (
               <div className="absolute right-0 mt-2 w-48 origin-top-right 
-              rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+              rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none  z-50"
               
               onMouseEnter={() => setIsDropdownOpen(true)}  // Keep it open when hovering over dropdown
               onMouseLeave={() => setIsDropdownOpen(false)}>
                 {user ? (
                   <>
-                    <a href="/userprofile" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                    <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                     Welcome {user.sub} - {user.roles?.join(", ")}  </a>
 
                     {(Array.isArray(userRoles) && userRoles.includes("USER")) && (
@@ -250,7 +251,7 @@ const Navbar = () => {
       </div>
 
       {/* Mobile Menu */}
-      {isMobileMenuOpen && (Array.isArray(userRoles) && userRoles.includes("ADMIN"))?(
+      {isMobileMenuOpen && (Array.isArray(userRoles) && (userRoles.includes("ADMIN")||userRoles.includes("USER")))?(
         <div className="sm:hidden">
           <div className="space-y-1 px-2 pb-3 pt-2">
           <a
@@ -259,6 +260,9 @@ const Navbar = () => {
   >
     Home
   </a>
+
+  {(Array.isArray(userRoles) && userRoles.includes("ADMIN") ) && (
+    <>
             <a
               href="adminsection"
               className="block rounded-md  px-3 py-2 text-base font-medium text-white"
@@ -283,6 +287,10 @@ const Navbar = () => {
             >
               Add License 
             </a>
+            </>
+)}
+
+
             <a
               href="about"
               className="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white"

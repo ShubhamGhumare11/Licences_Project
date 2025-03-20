@@ -136,6 +136,22 @@ import UserRegisterPopup from "../../Components/UserRegisterPopup"; // Import Po
           </main>
           {/* **********Hero Section End************ */}
 
+
+{/**********************Featured On Start*****************************/}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
           {/* Stats Section Start */}
           <div class="max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14 mx-auto">
             <div class="relative p-6 md:p-16">

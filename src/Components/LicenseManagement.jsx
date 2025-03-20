@@ -213,6 +213,15 @@ currentCustomers.forEach((customer) => {
           <table className="min-w-full divide-y divide-gray-200 bg-white shadow-md rounded-lg">
             <thead className="bg-gray-200">
               <tr>
+              <th
+          scope="col"
+          className="px-3 py-3 text-left text-xs font-medium text-gray-900 uppercase tracking-wider"
+        >
+          Sr.No
+        </th>
+        <th className="px-3 py-3 text-left text-xs font-medium text-gray-900 uppercase tracking-wider">
+                  Hotel Name
+                </th>
                 <th className="px-3 py-3 text-left text-xs font-medium text-gray-900 uppercase tracking-wider">
                   Fullname
                 </th>
@@ -240,7 +249,12 @@ currentCustomers.forEach((customer) => {
             <tbody className="bg-white divide-y divide-gray-200">
               {customerRows.map((row, index) => (
                 <tr key={row.customerId + (row.license ? row.license.licenseOfCustomerId : index)}>
-                  <td className="px-3 py-4">{row.firstName} {row.lastName}</td>
+                      <td className="px-3 py-4 whitespace-nowrap">
+            {index + 1} {/* Serial number */}
+          </td>
+          <td className="px-3 py-4">{row.firstName} </td>
+
+                  <td className="px-3 py-4">{row.lastName}</td>
                   <td className="px-3 py-4">{row.mobileNumber}</td>
                   <td className="px-3 py-4">
                     {row.license ? row.license.licenseName : "No License"}
